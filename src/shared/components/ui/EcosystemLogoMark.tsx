@@ -1,10 +1,8 @@
-export type LogoMarkVariant = "lms" | "boards";
+export type LogoMarkVariant = "boards";
 
 /**
- * Local replacement for `@tapizlabs/ui`'s `LogoMark` (removed from the design
- * system — each product now owns its brand glyph instead of a shared
- * component; ported 1:1 from `tapiz-lms/apps/web`'s `EcosystemLogoMark`).
- * Only `boards` (own brand) and `lms` (SSO login button icon) are needed here.
+ * Standalone brand glyph (not from `@tapizlabs/ui` — each product owns its
+ * own mark).
  *
  * Rendering is 3 overlaid strokes (ink bar, then a halo stroke in the
  * surrounding background color, then the color thread) instead of an SVG
@@ -12,11 +10,6 @@ export type LogoMarkVariant = "lms" | "boards";
  * avoids `<mask>` id-collision/hydration edge cases across repeated icons.
  */
 const GLYPHS: Record<LogoMarkVariant, { barPath: string; accentPath: string; accent: string }> = {
-  lms: {
-    barPath: "M18 8 V34 H36",
-    accentPath: "M30 14 L40 24",
-    accent: "#5b74e8",
-  },
   boards: {
     barPath: "M13 10 V34 M24 8 V28 M35 14 V40",
     accentPath: "M6 24 H42",

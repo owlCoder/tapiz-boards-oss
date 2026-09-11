@@ -4,7 +4,7 @@ interface SectionHeaderProps {
   action?: React.ReactNode;
 }
 
-/** Numerisan zaglavlje sekcije, po uzoru na /ui (tapiz-lms/apps/web) dashboard. */
+/** Numbered section heading used across the dashboard. */
 export function SectionHeader({ num, title, action }: SectionHeaderProps) {
   return (
     <div className="mb-4 flex items-baseline justify-between gap-3 px-0.5">

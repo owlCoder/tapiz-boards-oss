@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
-// Versioning scheme (matches tapiz-lms/apps/web/vite.config.ts): fixed major "1" +
-// build date as DDMMYY (e.g. 1.100726). Computed once at build time, baked into the
-// client bundle via `env` — not recomputed per-request.
+// Versioning scheme: fixed major "1" + build date as DDMMYY (e.g. 1.100726).
+// Computed once at build time, baked into the client bundle via `env` — not
+// recomputed per-request.
 const now = new Date();
 const version = `1.${String(now.getDate()).padStart(2, "0")}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getFullYear()).slice(-2)}`;
 

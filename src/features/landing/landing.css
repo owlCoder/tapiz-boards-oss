@@ -1,7 +1,5 @@
 /*
- * Tapiz Boards landing — Ink & Ember visual system, ported from
- * tapiz-lms/apps/web/src/features/landing/styles/effects.css (see DESIGN.md
- * there for the full section-anatomy spec). Scoped under .lp-page.
+ * Tapiz Boards landing — Ink & Ember visual system. Scoped under .lp-page.
  *
  * Light-first: near-black ink (#171321), warm orange/coral mesh hero,
  * pastel purple->pink tints, 4px-radius flat buttons (no offset-shadow
