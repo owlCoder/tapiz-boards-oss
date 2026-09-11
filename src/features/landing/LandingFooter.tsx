@@ -6,11 +6,11 @@ import {
   CheckSquare,
   ExternalLink,
   FileText,
+  GitHubIcon,
   History,
   Layers,
   Lock,
   Server,
-  UserCheck,
   Users,
 } from "@tapizlabs/ui";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -75,8 +75,8 @@ export function LandingFooter() {
           <FooterLink href="/login" icon={<Lock size={14} />}>
             {t.login}
           </FooterLink>
-          <FooterLink href="/register" icon={<UserCheck size={14} />}>
-            {t.register}
+          <FooterLink href="https://github.com/owlCoder/tapiz-boards-oss" icon={<GitHubIcon size={14} />}>
+            {t.sourceCode}
           </FooterLink>
         </nav>
         <nav aria-label={t.system}>

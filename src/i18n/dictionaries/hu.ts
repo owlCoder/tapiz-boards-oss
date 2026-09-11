@@ -2,7 +2,7 @@ import type { Dict } from "./sr";
 
 export const hu: Dict = {
   meta: {
-    description: "Tapiz Boards: backlog, sprintek, kanban, Peer QA és a hallgatói projektcsapatok haladása egy helyen.",
+    description: "Tapiz Boards: önállóan üzemeltetett, nyílt forráskódú backlog, sprint, kanban és haladáskövető munkatér kis csapatoknak.",
   },
   common: {
     cancel: "Mégse",
@@ -59,7 +59,6 @@ export const hu: Dict = {
     welcomeBack: "Üdv újra itt",
     loginTitle: "Bejelentkezés",
     loginSubtitle: "Térjen vissza csapatához, az aktív sprinthez és az Önre váró feladatokhoz.",
-    registeredBanner: "A fiók sikeresen létrejött. Jelentkezzen be.",
     email: "E-mail",
     password: "Jelszó",
     passwordPlaceholder: "Adja meg a jelszót",
@@ -67,31 +66,6 @@ export const hu: Dict = {
     hidePassword: "Jelszó elrejtése",
     loggingIn: "Bejelentkezés...",
     loginButton: "Bejelentkezés",
-    or: "vagy",
-    lmsLogin: "Bejelentkezés Tapiz LMS-sel",
-    noAccount: "Nincs fiókja?",
-    registerLink: "Regisztráljon",
-    studentAccount: "Hallgatói fiók",
-    registerTitle: "Regisztráció",
-    registerSubtitle:
-      "Hozzon létre fiókot, és szervezze meg első csapatprojektjét néhány perc alatt.",
-    firstName: "Keresztnév",
-    lastName: "Vezetéknév",
-    emailHint: "Az e-mail, amellyel bejelentkezik a Tapiz Boards fiókba.",
-    passwordHint: "Legalább 8 karakter.",
-    registering: "Regisztráció...",
-    registerButton: "Regisztráció",
-    haveAccount: "Már van fiókja?",
-    loginLink: "Jelentkezzen be",
-    haveLmsAccount: "Van Tapiz LMS fiókja?",
-    lmsDirectLink: "Jelentkezzen be közvetlenül az LMS-sel",
-    ssoErrors: {
-      lmsConflict: "Az LMS-fiók e-mail-címe már egy másik Tapiz Boards fiókhoz van kapcsolva.",
-      lmsSso: "A Tapiz LMS-en keresztüli bejelentkezés sikertelen. Próbálja újra, vagy jelentkezzen be jelszóval.",
-      accessDenied: "A hozzáférést a Tapiz LMS oldalán megtagadták.",
-      lmsRole: "A Tapiz LMS-en keresztüli bejelentkezés csak hallgatói fiókokkal engedélyezett.",
-      configuration: "Az SSO jelenleg nem érhető el. Jelentkezzen be jelszóval.",
-    },
     panel: {
       tagline: "A TAPIZ LABS TERMÉKE",
       kicker: "AZ ÖTLETTŐL A CÉLIG",
@@ -99,13 +73,13 @@ export const hu: Dict = {
       headline2: "Dolgozzon csapatban.",
       headline3: "Szállítsa le a projektet.",
       description:
-        "Backlog, sprintek, kanban, Peer QA és haladás: egy munkatér hallgatói projekteknek és az őket segítő oktatóknak.",
+        "Backlog, sprintek, kanban és haladáskövetés: egy önállóan üzemeltetett munkatér kis csapatoknak.",
       stats: [
         { value: "Backlog", label: "A munka tervezése" },
         { value: "Sprint", label: "A teljesítés követése" },
         { value: "Cél", label: "Az eredmény bemutatása" },
       ],
-      chips: ["KANBAN", "SPRINTEK", "PEER QA", "ÉRTÉKELÉS", "GITHUB"],
+      chips: ["KANBAN", "SPRINTEK", "ÖNÁLLÓAN ÜZEMELTETETT", "NYÍLT FORRÁSKÓD", "GITHUB"],
       status: "Rendszer működik",
     },
   },
@@ -122,16 +96,15 @@ export const hu: Dict = {
       ariaMobileNav: "Mobil navigáció",
     },
     hero: {
-      badge: "Munkatér hallgatói projektekhez",
-      eyebrow: "Csapatmunka a tantárgyakon",
+      badge: "Nyílt forráskódú, önállóan üzemeltetett",
+      eyebrow: "Csapatmunka a saját infrastruktúrádon",
       headline1: "Az ötlettől a célig,",
       headline2: "a teljes projekt",
       headline3: "egyetlen boardon.",
       description:
-        "A Tapiz Boards összekapcsolja a tervezést, sprinteket, kanbant, Peer QA-t és a haladás követését. A csapat mindig tudja, mi következik, az oktató pedig látja a projekt valódi előrehaladását.",
-      ctaRegister: "Projekt indítása",
+        "A Tapiz Boards összekapcsolja a tervezést, sprinteket, kanbant és a haladás követését egyetlen önállóan üzemeltetett munkatérben. Telepítsd a saját infrastruktúrádra, és tartsd meg a teljes kontrollt az adataid felett.",
+      ctaRegister: "Bejelentkezés",
       ctaLogin: "Bejelentkezés",
-      ctaPlayStore: "Elérhető a Google Play-en",
       previewLabel: "Tapiz Boards projektboard előnézet",
       previewProjectName: "Weboldal újratervezés",
       sprintGoal: "Cél: az MVP befejezése a demóra",
@@ -145,7 +118,7 @@ export const hu: Dict = {
       workflow: [
         { title: "Tervezés", description: "Backlog, prioritások és sprint" },
         { title: "Együttműködés", description: "Board, feladatok és megjegyzések" },
-        { title: "Ellenőrzés", description: "Peer QA, haladás és értékelés" },
+        { title: "Nyomon követés", description: "Haladás, aktivitás és retrospektívek" },
         { title: "Bemutatás", description: "Nyilvános board és GitHub repo" },
       ],
     },
@@ -153,7 +126,7 @@ export const hu: Dict = {
       eyebrow: "Egy összekapcsolt munkafolyamat",
       title: "Több mint kanban. A projekt operációs rendszere.",
       description:
-        "A backlog első ötletétől a végső értékelésig minden lépés összekapcsolt, átlátható és az egész csapat számára elérhető.",
+        "A backlog első ötletétől egy kész funkcióig minden lépés összekapcsolt, átlátható és az egész csapat számára elérhető.",
       items: [
         {
           kicker: "TERVEZÉS",
@@ -168,45 +141,45 @@ export const hu: Dict = {
             "A drag & drop kanban, felelősök, checklisták és megjegyzések egy helyen tartják a napi munkát a szétszórt üzenetek helyett.",
         },
         {
-          kicker: "PEER QA",
-          title: "A csapatok közötti tesztelés a folyamat része",
+          kicker: "ÖNÁLLÓAN ÜZEMELTETETT",
+          title: "Az adataid a saját infrastruktúrádon maradnak",
           description:
-            "Az oktató tesztelésre párosítja a csapatokat, a hallgatók hibákat jelentenek, minden megerősített probléma pedig a megfelelő backlogba kerül.",
+            "Telepítsd a Tapiz Boardsot a saját szerveredre vagy Vercel projektedbe, saját adatbázissal. Nincs szükség harmadik féltől származó fiókra a működéséhez.",
         },
         {
           kicker: "HALADÁS",
           title: "A haladás látható, nem benyomásokon alapul",
           description:
-            "A velocity, elkészült story pointok, aktivitások és retrospektívek megmutatják a csapat fejlődését és azt, hol szükséges segítség.",
+            "A velocity, elkészült story pointok, aktivitások és retrospektívek megmutatják, hol áll a csapat és hol szükséges segítség.",
         },
         {
           kicker: "TELJESÍTÉS",
-          title: "Készen áll a demóra, bemutatásra és értékelésre",
+          title: "Készen áll a demóra és bemutatásra",
           description:
             "Kapcsolja a GitHub repót, osszon meg bejelentkezés nélküli, csak olvasható boardot, és őrizze meg a bemutatható munkatörténetet.",
         },
       ],
     },
     insights: {
-      eyebrow: "Valós szerepekre tervezve",
+      eyebrow: "Kis csapatokra tervezve",
       title: "Egy projekt. A megfelelő nézet mindenkinek.",
       description:
-        "A hallgatóknak fókusz kell a mai munkához. Az oktatóknak minden csapat áttekintése. A Tapiz Boards mindkettőt biztosítja adatduplikálás nélkül.",
-      calloutKicker: "TAPIZ ÖKOSZISZTÉMA",
-      calloutTitle: "Egy fiók az LMS-hez és a Boardshoz",
-      calloutDescription: "Az oktatók meglévő Tapiz LMS-fiókjukkal lépnek be, a hallgatók pedig önálló Boards-fiókkal azonnal kezdhetnek.",
+        "Minden tag ugyanazt a boardot, backlogot és sprintet látja — nincs külön nézet, amit szinkronban kellene tartani, nincs adatduplikálás az eszközök között.",
+      calloutKicker: "NYÍLT FORRÁSKÓD",
+      calloutTitle: "MIT licenc, a tiéd az üzemeltetés",
+      calloutDescription: "A Tapiz Boards Open Source Edition ingyenesen önállóan üzemeltethető. A példányod minden tagja teljes hozzáféréssel rendelkezik — nincsenek csomagszintek.",
       items: [
         {
-          kicker: "HALLGATÓI CSAPATOKNAK",
+          kicker: "CSAPATOKNAK",
           title: "A mai munka találgatás nélkül",
           description:
             "Minden tag látja saját feladatait, határidőit, az aktív sprintet és a munka folytatásához szükséges összefüggéseket.",
         },
         {
-          kicker: "OKTATÓKNAK",
-          title: "Minden tantárgy és csapat egyetlen áttekintésben",
+          kicker: "ADMINISZTRÁTOROKNAK",
+          title: "Egyszerű fiókkezelés",
           description:
-            "Hozzon létre csapatokat csoportosan, szabályozza a csatlakozást, kövesse a haladást, és értékeljen átlátható pontrendszerrel.",
+            "Hozzon létre tagfiókokat, állítson vissza jelszavakat, és aktiváljon vagy deaktiváljon felhasználókat egyetlen admin felületről — nincs kezelendő nyilvános regisztráció.",
         },
         {
           kicker: "NYOMON KÖVETÉSHEZ",
@@ -226,21 +199,21 @@ export const hu: Dict = {
       eyebrow: "A következő sprint itt kezdődik",
       title: "Adjon projektjének egy helyet, ahol valóban haladhat.",
       description:
-        "Hozzon létre fiókot, gyűjtse össze a csapatot, és alakítsa az első követelményt kész funkcióvá. Telepítés és bonyolult beállítás nélkül.",
+        "Jelentkezzen be a példánya adminisztrátora által létrehozott fiókkal, gyűjtse össze a csapatot, és alakítsa az első követelményt kész funkcióvá.",
       points: [
         "BACKLOG ÉS SPRINTEK",
         "KANBAN ÉS FELELŐSÖK",
-        "PEER QA ÉS HALADÁS",
+        "ÖNÁLLÓAN ÜZEMELTETETT, NYÍLT FORRÁSKÓDÚ",
         "NYILVÁNOS BOARD A BEMUTATÁSHOZ",
       ],
-      createAccount: "Projekt indítása",
+      createAccount: "Bejelentkezés",
       login: "Bejelentkezés",
-      note: "Hallgatói fiókoknak ingyenes · Tapiz LMS SSO oktatóknak",
+      note: "Önállóan üzemeltetett · MIT licenc · nincs nyilvános regisztráció",
       summaryLabel: "PROJEKT-MUNKATÉR",
     },
     footer: {
       description:
-        "Projekt-munkatér hallgatói csapatoknak: a backlagtól és sprintektől a Peer QA-n át a bemutatásig és értékelésig.",
+        "Önállóan üzemeltetett, nyílt forráskódú projekt-munkatér kis csapatoknak: backlog, sprintek, kanban és bemutatásra kész boardok.",
       statusOperational: "STÁTUSZ · MŰKÖDIK",
       product: "Termék",
       board: "Board",
@@ -249,6 +222,7 @@ export const hu: Dict = {
       access: "Hozzáférés",
       login: "Bejelentkezés",
       register: "Regisztráció",
+      sourceCode: "Forráskód",
       system: "Rendszer",
       changelog: "Változásnapló",
       statusPage: "Rendszerállapot",

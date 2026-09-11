@@ -4,7 +4,7 @@
  */
 export const sr = {
   meta: {
-    description: "Tapiz Boards: backlog, sprintovi, kanban, Peer QA i napredak studentskih projektnih timova na jednom mestu.",
+    description: "Tapiz Boards: samostalno hostovan, otvorenog koda backlog, sprint, kanban i radni prostor za praćenje napretka malih timova.",
   },
   common: {
     cancel: "Otkaži",
@@ -61,7 +61,6 @@ export const sr = {
     welcomeBack: "Dobrodošli nazad",
     loginTitle: "Prijava",
     loginSubtitle: "Vratite se svom timu, aktivnom sprintu i zadacima koji vas čekaju.",
-    registeredBanner: "Nalog je uspešno kreiran. Prijavite se.",
     email: "Imejl",
     password: "Lozinka",
     passwordPlaceholder: "Unesite lozinku",
@@ -69,30 +68,6 @@ export const sr = {
     hidePassword: "Sakrij lozinku",
     loggingIn: "Prijavljivanje...",
     loginButton: "Prijavi se",
-    or: "ili",
-    lmsLogin: "Prijavi se preko Tapiz LMS-a",
-    noAccount: "Nemate nalog?",
-    registerLink: "Registrujte se",
-    studentAccount: "Novi nalog",
-    registerTitle: "Registracija",
-    registerSubtitle: "Kreirajte nalog i organizujte prvi projekat sa timom za nekoliko minuta.",
-    firstName: "Ime",
-    lastName: "Prezime",
-    emailHint: "Imejl za prijavu na Tapiz Boards nalog.",
-    passwordHint: "Najmanje 8 znakova.",
-    registering: "Registracija u toku...",
-    registerButton: "Registruj se",
-    haveAccount: "Već imate nalog?",
-    loginLink: "Prijavite se",
-    haveLmsAccount: "Imate Tapiz LMS nalog?",
-    lmsDirectLink: "Prijavite se direktno preko LMS-a",
-    ssoErrors: {
-      lmsConflict: "Imejl iz LMS naloga je već povezan sa drugim Tapiz Boards nalogom.",
-      lmsSso: "Prijava preko Tapiz LMS-a nije uspela. Pokušajte ponovo ili se prijavite lozinkom.",
-      accessDenied: "Pristup je odbijen na Tapiz LMS strani.",
-      lmsRole: "Prijava preko Tapiz LMS-a je dozvoljena samo studentskim nalozima.",
-      configuration: "SSO trenutno nije dostupan. Prijavite se lozinkom.",
-    },
     panel: {
       tagline: "TAPIZ LABS PROIZVOD",
       kicker: "OD IDEJE DO CILJA",
@@ -100,13 +75,13 @@ export const sr = {
       headline2: "Radite kao tim.",
       headline3: "Isporučite projekat.",
       description:
-        "Backlog, sprintovi, kanban, Peer QA i napredak: jedan radni prostor napravljen za studentske projekte i njihove asistente.",
+        "Backlog, sprintovi, kanban i praćenje napretka: jedan samostalno hostovan radni prostor za male timove.",
       stats: [
         { value: "Backlog", label: "Planiraj rad" },
         { value: "Sprint", label: "Prati isporuku" },
         { value: "Cilj", label: "Pokaži rezultat" },
       ],
-      chips: ["KANBAN", "SPRINTOVI", "PEER QA", "OCENJIVANJE", "GITHUB"],
+      chips: ["KANBAN", "SPRINTOVI", "SAMOSTALNO HOSTOVANO", "OTVORENOG KODA", "GITHUB"],
       status: "Sistem operativan",
     },
   },
@@ -123,16 +98,15 @@ export const sr = {
       ariaMobileNav: "Mobilna navigacija",
     },
     hero: {
-      badge: "Radni prostor za studentske projekte",
-      eyebrow: "Timski rad na predmetima",
+      badge: "Otvorenog koda, samostalno hostovan",
+      eyebrow: "Timska saradnja na sopstvenoj infrastrukturi",
       headline1: "Od ideje do cilja,",
       headline2: "ceo projekat",
       headline3: "na jednom boardu.",
       description:
-        "Tapiz Boards povezuje planiranje, sprintove, kanban, Peer QA i praćenje napretka. Tim tačno zna šta radi sledeće, a asistent vidi kako projekat zaista napreduje.",
-      ctaRegister: "Pokreni svoj projekat",
+        "Tapiz Boards povezuje planiranje, sprintove, kanban i praćenje napretka u jednom samostalno hostovanom radnom prostoru. Postavite ga na sopstvenu infrastrukturu i zadržite punu kontrolu nad podacima.",
+      ctaRegister: "Prijavi se",
       ctaLogin: "Prijavi se",
-      ctaPlayStore: "Preuzmi sa Google Play-a",
       previewLabel: "Prikaz Tapiz Boards projektnog boarda",
       previewProjectName: "Redizajn veb sajta",
       sprintGoal: "Cilj: završiti MVP za demo",
@@ -146,7 +120,7 @@ export const sr = {
       workflow: [
         { title: "Planiraj", description: "Backlog, prioriteti i sprint" },
         { title: "Sarađuj", description: "Board, zadaci i komentari" },
-        { title: "Proveri", description: "Peer QA, napredak i ocena" },
+        { title: "Prati", description: "Napredak, aktivnosti i retrospektive" },
         { title: "Predstavi", description: "Javni board i GitHub repo" },
       ],
     },
@@ -154,7 +128,7 @@ export const sr = {
       eyebrow: "Jedan povezan tok rada",
       title: "Nije samo kanban. To je operativni sistem vašeg projekta.",
       description:
-        "Od prve ideje u backlogu do završne ocene, svaki korak ostaje povezan, pregledan i dostupan celom timu.",
+        "Od prve ideje u backlogu do završene funkcionalnosti, svaki korak ostaje povezan, pregledan i dostupan celom timu.",
       items: [
         {
           kicker: "PLANIRANJE",
@@ -169,45 +143,45 @@ export const sr = {
             "Drag & drop kanban, zaduženja, checklist stavke i komentari drže svakodnevni rad na jednom mestu, bez traženja poruka po četovima.",
         },
         {
-          kicker: "PEER QA",
-          title: "Testiranje između timova postaje deo procesa",
+          kicker: "SAMOSTALNO HOSTOVANO",
+          title: "Vaši podaci ostaju na vašoj infrastrukturi",
           description:
-            "Asistent uparuje timove za testiranje, studenti prijavljuju bagove, a svaki potvrđen problem automatski stiže u backlog pravog tima.",
+            "Postavite Tapiz Boards na sopstveni server ili Vercel projekat sa sopstvenom bazom. Nije potreban nikakav nalog trećih strana da bi radio.",
         },
         {
           kicker: "NAPREDAK",
           title: "Napredak je vidljiv, ne zasnovan na utisku",
           description:
-            "Velocity, završeni story points, aktivnosti i retrospektive daju timu signal gde napreduje, a asistentu realnu sliku svakog projekta.",
+            "Velocity, završeni story points, aktivnosti i retrospektive daju timu jasnu sliku gde se stoji i gde je potrebna podrška.",
         },
         {
           kicker: "ISPORUKA",
-          title: "Spremno za demo, predstavljanje i ocenjivanje",
+          title: "Spremno za demo i predstavljanje",
           description:
             "Povežite GitHub repo, podelite read-only board bez prijave i sačuvajte istoriju rada koju tim može jasno da predstavi.",
         },
       ],
     },
     insights: {
-      eyebrow: "Napravljen za stvarne uloge",
+      eyebrow: "Napravljen za male timove",
       title: "Isti projekat. Pravi pregled za svakoga.",
       description:
-        "Studentima treba fokus za današnji rad. Asistentima treba pregled svih timova. Tapiz Boards daje oba, bez dupliranja podataka.",
-      calloutKicker: "TAPIZ EKOSISTEM",
-      calloutTitle: "Jedan nalog za LMS i Boards",
-      calloutDescription: "Asistenti ulaze postojećim Tapiz LMS nalogom, a studenti mogu da krenu odmah sa samostalnim Boards nalogom.",
+        "Svaki član vidi isti board, backlog i sprint — nema odvojenih prikaza koje treba usklađivati, nema dupliranja podataka po alatima.",
+      calloutKicker: "OTVORENI KOD",
+      calloutTitle: "MIT licenca, vaš da ga vodite",
+      calloutDescription: "Tapiz Boards Open Source Edition je besplatan za samostalno hostovanje. Svaki član vaše instance ima pun pristup — nema nivoa plana.",
       items: [
         {
-          kicker: "ZA STUDENTSKI TIM",
+          kicker: "ZA TIMOVE",
           title: "Današnji zadaci bez nagađanja",
           description:
             "Svaki član vidi svoja zaduženja, rokove, aktivan sprint i kontekst koji mu je potreban da nastavi rad.",
         },
         {
-          kicker: "ZA ASISTENTA",
-          title: "Svi predmeti i timovi iz jednog pregleda",
+          kicker: "ZA ADMINISTRATORE",
+          title: "Jednostavno upravljanje nalozima",
           description:
-            "Kreirajte timove grupno, kontrolišite pridruživanje, pratite napredak i ocenite projekat kroz jasnu rubriku.",
+            "Kreirajte naloge članova, resetujte lozinke i aktivirajte ili deaktivirajte korisnike sa jednog admin ekrana — bez javne registracije za upravljanje.",
         },
         {
           kicker: "ZA PRAĆENJE",
@@ -219,7 +193,7 @@ export const sr = {
           kicker: "ZA PREDSTAVLJANJE",
           title: "Jedan link pokazuje šta je tim isporučio",
           description:
-            "Javni read-only board i GitHub repo daju komisiji jasan pregled rezultata bez dodatnih naloga i objašnjavanja alata.",
+            "Javni read-only board i GitHub repo daju pregled rezultata bez dodatnih naloga i objašnjavanja alata.",
         },
       ],
     },
@@ -227,21 +201,21 @@ export const sr = {
       eyebrow: "Vaš sledeći sprint počinje ovde",
       title: "Dajte projektu mesto na kom će zaista napredovati.",
       description:
-        "Kreirajte nalog, okupite tim i pretvorite prvi zahtev u završenu funkcionalnost. Bez instalacije i komplikovanog podešavanja.",
+        "Prijavite se nalogom koji je kreirao administrator vaše instance, okupite tim i pretvorite prvi zahtev u završenu funkcionalnost.",
       points: [
         "BACKLOG I SPRINTOVI",
         "KANBAN I ZADUŽENJA",
-        "PEER QA I NAPREDAK",
+        "SAMOSTALNO HOSTOVANO, OTVORENOG KODA",
         "JAVNI BOARD ZA PREDSTAVLJANJE",
       ],
-      createAccount: "Pokreni projekat",
+      createAccount: "Prijavi se",
       login: "Prijavi se",
-      note: "Besplatno za studentske naloge · Tapiz LMS SSO za asistente",
+      note: "Samostalno hostovano · MIT licenca · bez javne registracije",
       summaryLabel: "PROJEKTNI RADNI PROSTOR",
     },
     footer: {
       description:
-        "Projektni radni prostor za studentske timove: od backloga i sprinta do Peer QA, predstavljanja i ocene.",
+        "Samostalno hostovan, otvorenog koda projektni radni prostor za male timove: backlog, sprintovi, kanban i board spreman za predstavljanje.",
       statusOperational: "STATUS · OPERATIVAN",
       product: "Proizvod",
       board: "Board",
@@ -250,6 +224,7 @@ export const sr = {
       access: "Pristup",
       login: "Prijava",
       register: "Registracija",
+      sourceCode: "Izvorni kod",
       system: "Sistem",
       changelog: "Istorija izmena",
       statusPage: "Status sistema",

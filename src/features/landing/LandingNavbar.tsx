@@ -1,7 +1,6 @@
 "use client";
 
 import { Fragment } from "react";
-import Link from "next/link";
 import { ArrowRight, CheckSquare, LandingNavbarShell, Layers, Users } from "@tapizlabs/ui";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -28,11 +27,8 @@ export function LandingNavbar() {
       closeMenuLabel={t.closeMenu}
       desktopActions={(
         <Fragment>
-          <Link href="/login" className="lp-login-link gap-2">
-            {t.login}
-          </Link>
-          <LandingButton href="/register" className="lp-nav-primary">
-            {t.register}<ArrowRight size={14} />
+          <LandingButton href="/login" className="lp-nav-primary">
+            {t.login}<ArrowRight size={14} />
           </LandingButton>
         </Fragment>
       )}
@@ -41,10 +37,7 @@ export function LandingNavbar() {
       menuLabel={t.menu}
       mobileActions={(
         <Fragment>
-          <LandingButton href="/login" variant="secondary">
-            {t.login}
-          </LandingButton>
-          <LandingButton href="/register">{t.register}</LandingButton>
+          <LandingButton href="/login">{t.login}</LandingButton>
         </Fragment>
       )}
       mobileDialogLabel={t.menu}

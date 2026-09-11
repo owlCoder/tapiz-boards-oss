@@ -2,7 +2,7 @@ import type { Dict } from "./sr";
 
 export const fr: Dict = {
   meta: {
-    description: "Tapiz Boards : backlog, sprints, kanban, Peer QA et suivi des projets étudiants au même endroit.",
+    description: "Tapiz Boards : un espace de travail auto-hébergé et open source pour le backlog, les sprints, le kanban et le suivi de progression des petites équipes.",
   },
   common: {
     cancel: "Annuler",
@@ -59,7 +59,6 @@ export const fr: Dict = {
     welcomeBack: "Bon retour",
     loginTitle: "Connexion",
     loginSubtitle: "Retrouvez votre équipe, le sprint actif et les tâches qui vous attendent.",
-    registeredBanner: "Compte créé avec succès. Connectez-vous.",
     email: "E-mail",
     password: "Mot de passe",
     passwordPlaceholder: "Saisissez le mot de passe",
@@ -67,31 +66,6 @@ export const fr: Dict = {
     hidePassword: "Masquer le mot de passe",
     loggingIn: "Connexion...",
     loginButton: "Se connecter",
-    or: "ou",
-    lmsLogin: "Se connecter via Tapiz LMS",
-    noAccount: "Pas de compte ?",
-    registerLink: "Inscrivez-vous",
-    studentAccount: "Compte étudiant",
-    registerTitle: "Inscription",
-    registerSubtitle:
-      "Créez un compte et organisez votre premier projet d'équipe en quelques minutes.",
-    firstName: "Prénom",
-    lastName: "Nom",
-    emailHint: "L'e-mail utilisé pour vous connecter à Tapiz Boards.",
-    passwordHint: "Au moins 8 caractères.",
-    registering: "Inscription...",
-    registerButton: "S'inscrire",
-    haveAccount: "Vous avez déjà un compte ?",
-    loginLink: "Connectez-vous",
-    haveLmsAccount: "Vous avez un compte Tapiz LMS ?",
-    lmsDirectLink: "Connectez-vous directement via le LMS",
-    ssoErrors: {
-      lmsConflict: "L'e-mail du compte LMS est déjà lié à un autre compte Tapiz Boards.",
-      lmsSso: "La connexion via Tapiz LMS a échoué. Réessayez ou connectez-vous avec votre mot de passe.",
-      accessDenied: "L'accès a été refusé côté Tapiz LMS.",
-      lmsRole: "La connexion via Tapiz LMS est réservée aux comptes étudiants.",
-      configuration: "Le SSO est actuellement indisponible. Connectez-vous avec votre mot de passe.",
-    },
     panel: {
       tagline: "UN PRODUIT TAPIZ LABS",
       kicker: "DE L'IDÉE AU RÉSULTAT",
@@ -99,13 +73,13 @@ export const fr: Dict = {
       headline2: "Construisez en équipe.",
       headline3: "Livrez le projet.",
       description:
-        "Backlog, sprints, kanban, Peer QA et progression : un espace de travail conçu pour les projets étudiants et les assistants qui les accompagnent.",
+        "Backlog, sprints, kanban et suivi de progression : un espace de travail auto-hébergé pour les petites équipes.",
       stats: [
         { value: "Backlog", label: "Planifier le travail" },
         { value: "Sprint", label: "Suivre la livraison" },
         { value: "Résultat", label: "Montrer le résultat" },
       ],
-      chips: ["KANBAN", "SPRINTS", "PEER QA", "ÉVALUATION", "GITHUB"],
+      chips: ["KANBAN", "SPRINTS", "AUTO-HÉBERGÉ", "OPEN SOURCE", "GITHUB"],
       status: "Système opérationnel",
     },
   },
@@ -122,16 +96,15 @@ export const fr: Dict = {
       ariaMobileNav: "Navigation mobile",
     },
     hero: {
-      badge: "L'espace de travail des projets étudiants",
-      eyebrow: "Travail d'équipe sur les matières",
+      badge: "Open source, auto-hébergé",
+      eyebrow: "Collaboration d'équipe sur votre propre infrastructure",
       headline1: "De l'idée au résultat,",
       headline2: "tout le projet",
       headline3: "sur un seul board.",
       description:
-        "Tapiz Boards relie planification, sprints, kanban, Peer QA et suivi de progression. L'équipe sait toujours quoi faire ensuite, tandis que l'assistant voit comment le projet avance réellement.",
-      ctaRegister: "Démarrer votre projet",
+        "Tapiz Boards relie planification, sprints, kanban et suivi de progression dans un espace de travail auto-hébergé. Déployez-le sur votre propre infrastructure et gardez le contrôle total de vos données.",
+      ctaRegister: "Se connecter",
       ctaLogin: "Se connecter",
-      ctaPlayStore: "Disponible sur Google Play",
       previewLabel: "Aperçu d’un board de projet Tapiz Boards",
       previewProjectName: "Refonte du site web",
       sprintGoal: "Objectif : terminer le MVP pour la démo",
@@ -145,7 +118,7 @@ export const fr: Dict = {
       workflow: [
         { title: "Planifier", description: "Backlog, priorités et sprint" },
         { title: "Collaborer", description: "Board, tâches et commentaires" },
-        { title: "Valider", description: "Peer QA, progrès et notes" },
+        { title: "Suivre", description: "Progression, activité et rétrospectives" },
         { title: "Présenter", description: "Board public et dépôt GitHub" },
       ],
     },
@@ -153,7 +126,7 @@ export const fr: Dict = {
       eyebrow: "Un flux de travail connecté",
       title: "Plus qu'un kanban. Le système d'exploitation de votre projet.",
       description:
-        "De la première idée dans le backlog à la note finale, chaque étape reste connectée, visible et accessible à toute l'équipe.",
+        "De la première idée dans le backlog à une fonctionnalité terminée, chaque étape reste connectée, visible et accessible à toute l'équipe.",
       items: [
         {
           kicker: "PLANIFICATION",
@@ -168,45 +141,45 @@ export const fr: Dict = {
             "Kanban drag & drop, responsables, checklists et commentaires regroupent le travail quotidien au lieu de le disperser dans les conversations.",
         },
         {
-          kicker: "PEER QA",
-          title: "Les tests entre équipes font partie du processus",
+          kicker: "AUTO-HÉBERGÉ",
+          title: "Vos données restent sur votre infrastructure",
           description:
-            "Les assistants associent les équipes pour les tests, les étudiants signalent les bugs et chaque problème confirmé arrive dans le bon backlog.",
+            "Déployez Tapiz Boards sur votre propre serveur ou projet Vercel avec votre propre base de données. Aucun compte tiers n'est requis pour le faire fonctionner.",
         },
         {
           kicker: "PROGRESSION",
           title: "La progression est visible, pas fondée sur une impression",
           description:
-            "Vélocité, story points terminés, activités et rétrospectives montrent aux équipes leurs progrès et aux assistants où intervenir.",
+            "Vélocité, story points terminés, activités et rétrospectives montrent clairement où en est l'équipe et où intervenir.",
         },
         {
           kicker: "LIVRAISON",
-          title: "Prêt pour la démo, la présentation et l'évaluation",
+          title: "Prêt pour la démo et la présentation",
           description:
             "Reliez le dépôt GitHub, partagez un board en lecture seule sans connexion et conservez un historique que l'équipe peut présenter clairement.",
         },
       ],
     },
     insights: {
-      eyebrow: "Conçu pour les vrais rôles",
+      eyebrow: "Conçu pour les petites équipes",
       title: "Un seul projet. La bonne vue pour chacun.",
       description:
-        "Les étudiants ont besoin de se concentrer sur le travail du jour. Les assistants ont besoin d'une vue sur toutes les équipes. Tapiz Boards offre les deux sans dupliquer les données.",
-      calloutKicker: "ÉCOSYSTÈME TAPIZ",
-      calloutTitle: "Un seul compte pour LMS et Boards",
-      calloutDescription: "Les assistants utilisent leur compte Tapiz LMS existant, tandis que les étudiants peuvent commencer immédiatement avec un compte Boards autonome.",
+        "Chaque membre voit le même board, le même backlog et le même sprint — pas de vues séparées à synchroniser, pas de données dupliquées entre outils.",
+      calloutKicker: "OPEN SOURCE",
+      calloutTitle: "Licence MIT, à vous de l'héberger",
+      calloutDescription: "Tapiz Boards Open Source Edition est gratuit à auto-héberger. Chaque membre de votre instance a un accès complet — il n'y a pas de niveaux de plan.",
       items: [
         {
-          kicker: "POUR L'ÉQUIPE ÉTUDIANTE",
+          kicker: "POUR LES ÉQUIPES",
           title: "Le travail du jour sans hésitation",
           description:
             "Chaque membre voit ses tâches, échéances, sprint actif et tout le contexte nécessaire pour poursuivre le travail.",
         },
         {
-          kicker: "POUR L'ASSISTANT",
-          title: "Toutes les matières et équipes dans une seule vue",
+          kicker: "POUR LES ADMINISTRATEURS",
+          title: "Une gestion des comptes simple",
           description:
-            "Créez les équipes par lot, contrôlez les adhésions, suivez la progression et évaluez le projet avec une grille claire.",
+            "Créez des comptes membres, réinitialisez les mots de passe et activez ou désactivez des utilisateurs depuis un seul écran d'administration — sans inscription publique à gérer.",
         },
         {
           kicker: "POUR LE SUIVI",
@@ -218,7 +191,7 @@ export const fr: Dict = {
           kicker: "POUR LA PRÉSENTATION",
           title: "Un seul lien montre ce que l'équipe a livré",
           description:
-            "Un board public en lecture seule et le dépôt GitHub donnent au jury une vue claire du résultat sans compte supplémentaire.",
+            "Un board public en lecture seule et le dépôt GitHub donnent une vue claire du résultat sans compte supplémentaire.",
         },
       ],
     },
@@ -226,21 +199,21 @@ export const fr: Dict = {
       eyebrow: "Votre prochain sprint commence ici",
       title: "Donnez à votre projet un espace où il peut vraiment avancer.",
       description:
-        "Créez un compte, rassemblez votre équipe et transformez le premier besoin en fonctionnalité terminée. Sans installation ni configuration complexe.",
+        "Connectez-vous avec un compte créé par l'administrateur de votre instance, rassemblez votre équipe et transformez le premier besoin en fonctionnalité terminée.",
       points: [
         "BACKLOG ET SPRINTS",
         "KANBAN ET RESPONSABLES",
-        "PEER QA ET PROGRESSION",
+        "AUTO-HÉBERGÉ, OPEN SOURCE",
         "BOARD PUBLIC POUR LA PRÉSENTATION",
       ],
-      createAccount: "Démarrer le projet",
+      createAccount: "Se connecter",
       login: "Se connecter",
-      note: "Gratuit pour les comptes étudiants · SSO Tapiz LMS pour les assistants",
+      note: "Auto-hébergé · licence MIT · sans inscription publique",
       summaryLabel: "ESPACE DE TRAVAIL PROJET",
     },
     footer: {
       description:
-        "Un espace de travail pour les projets étudiants : du backlog et des sprints au Peer QA, à la présentation et à l'évaluation.",
+        "Un espace de travail projet open source et auto-hébergé pour les petites équipes : backlog, sprints, kanban et boards prêts à présenter.",
       statusOperational: "STATUT · OPÉRATIONNEL",
       product: "Produit",
       board: "Tableau",
@@ -249,6 +222,7 @@ export const fr: Dict = {
       access: "Accès",
       login: "Connexion",
       register: "Inscription",
+      sourceCode: "Code source",
       system: "Système",
       changelog: "Historique des modifications",
       statusPage: "Statut du système",
