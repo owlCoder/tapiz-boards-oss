@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { createProjectSchema, inviteCodeSchema, repoUrlSchema } from "@/domain/validation/project.schema";
+import { createProjectSchema, repoUrlSchema } from "@/domain/validation/project.schema";
 import { projectsService } from "@/application/projects.service";
 import { eventsService } from "@/application/events.service";
 import { usersService } from "@/application/users.service";
@@ -78,44 +78,6 @@ export async function createProjectAction(
     if (!result.ok) return result;
     revalidatePath("/");
     return ok({ projectId: result.data.id });
-  });
-}
-
-export async function joinByInviteCodeAction(
-  code: unknown,
-): Promise<ActionResult<{ projectId: string }>> {
-  return runAction(async () => {
-    const user = await requireUser();
-    const parsed = inviteCodeSchema.safeParse(code);
-    if (!parsed.success) return fail(parsed.error.issues[0].message);
-    const result = await projectsService.joinByInviteCode(parsed.data, user.id);
-    if (!result.ok) return result;
-    const project = result.data;
-    await eventsService.log(project.id, user.id, "member_added", user.name);
-    revalidatePath("/");
-    return ok({ projectId: project.id });
-  });
-}
-
-export async function regenerateInviteCodeAction(
-  projectId: unknown,
-): Promise<ActionResult<{ inviteCode: string }>> {
-  return runAction(async () => {
-    const id = idSchema.parse(projectId);
-    await requireProjectOwner(id);
-    const inviteCode = await projectsService.regenerateInviteCode(id);
-    revalidatePath(`/projects/${id}/board`);
-    return ok({ inviteCode });
-  });
-}
-
-export async function disableInviteCodeAction(projectId: unknown): Promise<ActionResult> {
-  return runAction(async () => {
-    const id = idSchema.parse(projectId);
-    await requireProjectOwner(id);
-    await projectsService.disableInviteCode(id);
-    revalidatePath(`/projects/${id}/board`);
-    return ok(undefined);
   });
 }
 

@@ -11,7 +11,6 @@ const dtoColumns = {
   id: projects.id,
   name: projects.name,
   ownerId: projects.ownerId,
-  inviteCode: projects.inviteCode,
   publicToken: projects.publicToken,
   repoUrl: projects.repoUrl,
   deletedAt: projects.deletedAt,
@@ -65,6 +64,22 @@ export const projectsRepo: ProjectsRepo = {
       .orderBy(asc(projects.name));
   },
 
+  /** Every non-deleted project, regardless of membership — this deployment
+   * gives every logged-in user full visibility into all projects. */
+  async listAll(): Promise<ProjectDto[]> {
+    return db
+      .select({
+        ...dtoColumns,
+        memberCount:
+          sql<number>`(select count(*) from project_members pm where pm.project_id = ${projects.id})`.mapWith(
+            Number,
+          ),
+      })
+      .from(projects)
+      .where(isNull(projects.deletedAt))
+      .orderBy(asc(projects.name));
+  },
+
   async listTrashForUser(userId: string): Promise<ProjectDto[]> {
     return db
       .select(dtoColumns)
@@ -77,15 +92,6 @@ export const projectsRepo: ProjectsRepo = {
 
   async findByIdIncludingDeleted(id: string): Promise<ProjectDto | null> {
     const rows = await db.select(dtoColumns).from(projects).where(eq(projects.id, id)).limit(1);
-    return rows[0] ?? null;
-  },
-
-  async findByInviteCode(code: string): Promise<ProjectDto | null> {
-    const rows = await db
-      .select(dtoColumns)
-      .from(projects)
-      .where(and(eq(projects.inviteCode, code), isNull(projects.deletedAt)))
-      .limit(1);
     return rows[0] ?? null;
   },
 
@@ -106,10 +112,10 @@ export const projectsRepo: ProjectsRepo = {
     await db.update(projects).set({ repoUrl: url }).where(eq(projects.id, projectId));
   },
 
-  async create(ownerId: string, name: string, inviteCode: string): Promise<ProjectDto> {
+  async create(ownerId: string, name: string): Promise<ProjectDto> {
     const projectId = crypto.randomUUID();
     await db.transaction(async (tx) => {
-      await tx.insert(projects).values({ id: projectId, name, ownerId, inviteCode });
+      await tx.insert(projects).values({ id: projectId, name, ownerId });
       await seedColumns(tx, projectId);
       await tx.insert(projectMembers).values({ projectId, userId: ownerId });
     });
@@ -117,15 +123,10 @@ export const projectsRepo: ProjectsRepo = {
       id: projectId,
       name,
       ownerId,
-      inviteCode,
       publicToken: null,
       repoUrl: null,
       deletedAt: null,
     };
-  },
-
-  async setInviteCode(projectId: string, code: string | null): Promise<void> {
-    await db.update(projects).set({ inviteCode: code }).where(eq(projects.id, projectId));
   },
 
   async softDelete(id: string): Promise<void> {

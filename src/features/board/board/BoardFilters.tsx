@@ -24,6 +24,7 @@ interface BoardFiltersProps {
   /** Opciono — kad nije prosleđeno, dugme za kolone se ne prikazuje (premešteno u Подешавања drawer). */
   onManageColumns?: () => void;
   onCreateStory: () => void;
+  onSettingsOpen: () => void;
 }
 
 export function BoardFilters({
@@ -42,6 +43,7 @@ export function BoardFilters({
   onInsightsToggle,
   onManageColumns,
   onCreateStory,
+  onSettingsOpen,
 }: BoardFiltersProps) {
   const { dict } = useI18n();
   const fieldId = useId();
@@ -56,9 +58,16 @@ export function BoardFilters({
         onChange={onSearchChange}
         placeholder={dict.board.searchPlaceholder}
         clearable
-        wrapperClassName="w-full min-w-0 lg:flex-1 lg:basis-56"
+        wrapperClassName="w-full min-w-0 lg:w-48 lg:flex-none"
         inputClassName={controlClassName}
         iconClassName="text-(--tapiz-text-muted)"
+      />
+      <Button
+        variant="ghost"
+        icon={<Gear size={18} />}
+        onClick={onSettingsOpen}
+        aria-label={dict.board.teamSettings}
+        className="h-11 w-11 shrink-0 justify-center border-none px-0 shadow-none"
       />
       <div className="grid grid-cols-2 gap-2 lg:flex lg:w-auto">
         <Select
@@ -66,7 +75,7 @@ export function BoardFilters({
           aria-label={dict.board.colAssignee}
           value={filterAssignee}
           onChange={(e) => onAssigneeChange(e.target.value)}
-          className={`${controlClassName} w-full lg:w-auto lg:min-w-40`}
+          className={`${controlClassName} w-full lg:w-44`}
         >
           <option value={ALL}>{dict.board.filterAssigneeAll}</option>
           {members.map((m) => (
@@ -80,7 +89,7 @@ export function BoardFilters({
           aria-label={dict.board.priorityLabel}
           value={filterPriority}
           onChange={(e) => onPriorityChange(e.target.value)}
-          className={`${controlClassName} w-full lg:w-auto lg:min-w-36`}
+          className={`${controlClassName} w-full lg:w-44`}
         >
           <option value={ALL}>{dict.board.filterPriorityAll}</option>
           <option value="high">{dict.board.priorityHigh}</option>

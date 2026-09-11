@@ -35,8 +35,6 @@ export const projects = mysqlTable("projects", {
   ownerId: varchar("owner_id", { length: 36 })
     .notNull()
     .references(() => users.id, { onDelete: "restrict" }),
-  /** Active invite code for the project; NULL = joining is locked. */
-  inviteCode: varchar("invite_code", { length: 16 }).unique(),
   /** Token for the public read-only board view; NULL = link disabled. */
   publicToken: varchar("public_token", { length: 36 }).unique(),
   /** Public GitHub repo linked to the project; NULL = not linked. */

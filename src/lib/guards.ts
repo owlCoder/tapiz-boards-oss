@@ -64,9 +64,10 @@ export async function requireProjectManager(
   throw new UnauthorizedError("Samo vlasnik projekta može ovu akciju");
 }
 
-/** Access to the board/project: must be a member. */
+/** Access to the board/project: any logged-in user on this deployment. */
 export async function requireProjectMember(projectId: string): Promise<SessionUser> {
   const user = await requireUser();
-  if (await projectsService.isMember(projectId, user.id)) return user;
-  throw new UnauthorizedError("Niste član ovog projekta");
+  const projectResult = await projectsService.getById(projectId);
+  if (!projectResult.ok) throw new UnauthorizedError(projectResult.error);
+  return user;
 }

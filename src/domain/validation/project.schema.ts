@@ -9,15 +9,6 @@ export const createProjectSchema = z.object({
 });
 export type CreateProjectInput = z.infer<typeof createProjectSchema>;
 
-/** Invite code format: TB-XXXXXX (excludes easily confused chars 0/O/1/I). */
-export const INVITE_CODE_REGEX = /^TB-[A-HJ-NP-Z2-9]{6}$/;
-
-export const inviteCodeSchema = z
-  .string()
-  .trim()
-  .toUpperCase()
-  .regex(INVITE_CODE_REGEX, "Neispravan format koda (npr. TB-X7K2M9)");
-
 /** Public GitHub repo: https://github.com/owner/repo (no subpaths). */
 export const repoUrlSchema = z
   .string()

@@ -11,7 +11,8 @@ export interface ProjectPageContext {
   canManage: boolean;
 }
 
-/** Server-side access check for project pages: must be a member; owner can manage. */
+/** Server-side access check for project pages: any logged-in user can view
+ * and work on any project on this deployment; owner can manage. */
 export async function requireProjectPageAccess(projectId: string): Promise<ProjectPageContext> {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
@@ -26,9 +27,5 @@ export async function requireProjectPageAccess(projectId: string): Promise<Proje
   const project = projectResult.data;
 
   const canManage = project.ownerId === user.id;
-  if (!canManage) {
-    const isMember = await projectsService.isMember(projectId, user.id);
-    if (!isMember) notFound();
-  }
   return { user, project, canManage };
 }

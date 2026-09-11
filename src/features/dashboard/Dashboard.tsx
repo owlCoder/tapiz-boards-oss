@@ -1,7 +1,6 @@
 "use client";
 
-import { Star, Trash } from "@tapizlabs/ui";
-import Link from "next/link";
+import { Star } from "@tapizlabs/ui";
 import type { ProjectDto } from "@/domain/types";
 import { useI18n } from "@/i18n/I18nProvider";
 import { PersonalTeamsSection } from "@/features/projects/personal/PersonalTeamsSection";
@@ -28,19 +27,7 @@ export function Dashboard({ firstName, projects, currentUserId }: DashboardProps
       />
 
       <section>
-        <SectionHeader
-          num="00"
-          title={t.personalTeams}
-          action={
-            <Link
-              href="/trash"
-              className="flex items-center gap-1.5 text-[11px] font-semibold text-txt-4 no-underline transition-colors hover:text-primary-300"
-            >
-              <Trash size={13} />
-              {dict.trash.title}
-            </Link>
-          }
-        />
+        <SectionHeader num="00" title={t.personalTeams} />
         <PersonalTeamsSection projects={projects} currentUserId={currentUserId} />
       </section>
 

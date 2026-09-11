@@ -2,7 +2,6 @@ export interface ProjectDto {
   id: string;
   name: string;
   ownerId: string;
-  inviteCode: string | null;
   /** Token for the public read-only board view; NULL = disabled. */
   publicToken: string | null;
   /** Public GitHub repo linked to the project; NULL = not linked. */

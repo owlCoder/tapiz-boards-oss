@@ -7,9 +7,7 @@ import {
   closestCorners,
 } from "@dnd-kit/core";
 import {
-  Button,
   EmptyState,
-  Gear,
   InfoBanner,
   SectionCard,
   Surface,
@@ -86,15 +84,6 @@ export function BoardView({
         project={project}
         showProjectMeta={false}
         banner={<InfoBanner text={dict.board.infoBanner} />}
-        actions={
-          <Button
-            variant="ghost"
-            icon={<Gear size={18} />}
-            onClick={() => setSettingsOpen(true)}
-            aria-label={dict.board.teamSettings}
-            className="h-10 w-10 justify-center border-none px-0 shadow-none"
-          />
-        }
       />
       <BoardSprintBar sprint={activeSprint} columns={columns} />
       <BoardFilters
@@ -112,6 +101,7 @@ export function BoardView({
         onCalendarOpen={() => setCalendarOpen(true)}
         onInsightsToggle={() => setInsightsOpen(true)}
         onCreateStory={() => setCreateOpen(true)}
+        onSettingsOpen={() => setSettingsOpen(true)}
       />
       {filtersActive && <InfoBanner text={dict.board.filtersDragDisabled} />}
       <StoryCreateForm
@@ -177,7 +167,6 @@ export function BoardView({
       <ProjectSettingsPanel
         open={settingsOpen}
         project={project}
-        currentUser={currentUser}
         canManage={canManage}
         onManageColumns={() => setManageOpen(true)}
         onClose={() => setSettingsOpen(false)}

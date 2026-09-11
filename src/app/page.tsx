@@ -11,7 +11,7 @@ export default async function HomePage() {
 
   const [profile, projects] = await Promise.all([
     usersService.getById(session.user.id),
-    projectsService.listForUser(session.user.id),
+    projectsService.listAll(),
   ]);
   const user = {
     name: profile ? `${profile.firstName} ${profile.lastName}` : session.user.name ?? "",
