@@ -1,0 +1,106 @@
+# Tapiz Boards — Open Source Edition
+
+A self-hosted Kanban and sprint-planning tool for small teams: backlog, board with drag & drop, sprints, comments, and a simple project/trash model. MIT licensed.
+
+This is the open-source edition of Tapiz Boards, derived from the hosted product. It has no dependency on Tapiz LMS, no SSO, and no public self-registration — an admin creates every account.
+
+## Stack
+
+- Next.js 16 (App Router, Turbopack), React 19, Tailwind v4, [`@tapizlabs/ui`](https://www.npmjs.com/package/@tapizlabs/ui) (public MIT design system)
+- MySQL + Drizzle ORM (`mysql2`)
+- Auth.js v5 (credentials only — email/password, JWT httpOnly cookie session)
+- `@dnd-kit` for board drag & drop, Zod for validation, bcryptjs for password hashing
+
+## Architecture
+
+```
+src/domain          # types, zod schemas, pure business logic
+src/application     # use-case services + repository interfaces (ports)
+src/infrastructure  # drizzle schema/client + repositories
+src/lib             # auth, guards, server actions (thin: zod → service → revalidate)
+src/features        # UI by feature (auth, projects, board, admin, settings, dashboard)
+src/app             # routes (server components)
+```
+
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the reasoning behind the Project/Trash model, and [`docs/UPSTREAM_SYNC.md`](docs/UPSTREAM_SYNC.md) if you maintain this fork alongside the original hosted product.
+
+## Local development
+
+Prerequisites: Node.js 20+, a MySQL 8+ database (local or remote).
+
+```bash
+npm install
+cp .env.example .env   # fill in DATABASE_URL and AUTH_SECRET, see below
+npm run db:push        # creates the schema on an empty database
+npm run create-admin -- --email you@example.com --password "a-strong-password" --first-name Ana --last-name Petrović
+npm run dev
+```
+
+Open http://localhost:3004 and sign in with the admin account you just created. As admin, use **User management** in the sidebar to create member accounts — there is no public sign-up page.
+
+### Local MySQL via Docker (optional)
+
+```bash
+docker run -d --name tapiz-boards-mysql -e MYSQL_ROOT_PASSWORD=devpass \
+  -e MYSQL_DATABASE=tapiz_boards -p 3307:3306 mysql:8.4
+```
+
+Then set `DATABASE_URL=mysql://root:devpass@localhost:3307/tapiz_boards` in `.env`.
+
+## Environment variables
+
+See [`.env.example`](.env.example) for the full list with comments. In short:
+
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `DATABASE_URL` | Yes | MySQL connection string. |
+| `DATABASE_SSL_CA_BASE64` | If your provider requires TLS with a CA cert (e.g. Aiven) | Base64 of `ca.pem`. Leave empty for local MySQL without TLS. |
+| `AUTH_SECRET` | Yes | Generate with `openssl rand -base64 32`. |
+| `AUTH_URL` | In production | Public URL of your deployment, e.g. `https://boards.example.com`. |
+| `AUTH_TRUST_HOST` | Yes | Keep `true` — required for Auth.js behind a reverse proxy/PaaS. |
+
+No LMS, telemetry, or third-party service keys are needed — this edition has no dependency on any private Tapiz infrastructure.
+
+## Deploying an Aiven MySQL database + Vercel
+
+1. **Create the database** — in Aiven, create a MySQL service and a database within it. Copy the connection string it gives you (`mysql://user:pass@host:port/dbname`).
+2. **Get the CA certificate** — download `ca.pem` from the Aiven console, then base64-encode it:
+   ```bash
+   base64 -w0 ca.pem   # Linux
+   base64 -i ca.pem    # macOS
+   ```
+   Put the result in `DATABASE_SSL_CA_BASE64`.
+3. **Push the schema** — from your machine, with `.env` pointed at the Aiven database:
+   ```bash
+   npm run db:push
+   ```
+   For `drizzle-kit push` specifically (it doesn't read the CA variable), append `?ssl={"rejectUnauthorized":false}` to a *copy* of the connection string used only for this command.
+4. **Create the first admin** against the same database:
+   ```bash
+   npm run create-admin -- --email you@example.com --password "..." --first-name Ana --last-name Petrović
+   ```
+5. **Import into Vercel** — connect the GitHub repo, then set the environment variables from the table above in the Vercel project settings (`AUTH_URL` = your Vercel domain).
+6. **Deploy.** Vercel's build never runs migrations — `db:push` is a manual, explicit step you run yourself, so a bad deploy can't silently alter your schema.
+7. **Verify** — visit the deployed URL, sign in with the admin account, create a project, and confirm the board loads.
+
+## Everyday use
+
+- **Projects** — any member can create a project; it comes pre-seeded with three columns (`TO DO`, `IN PROGRESS`, `DONE`). Invite others via an invite code or add them directly if you're the owner.
+- **Trash** — deleting a project soft-deletes it into **Trash**, where the owner can restore it or permanently delete it (which also removes its columns, stories, tasks, comments, and sprints).
+- **Admin** — the account created by `create-admin` is an instance admin. Admin's only special power is user management (`/admin/users`): creating accounts, resetting passwords, activating/deactivating, and deleting users. For day-to-day project work, admin behaves exactly like any other member. The instance always keeps at least one active admin — the last one can't be deactivated or deleted.
+
+## Checks
+
+```bash
+npm run lint && npm run typecheck && npm run build
+```
+
+Smoke test against a real database (creates and cleans up its own throwaway data):
+
+```bash
+npm run smoke
+```
+
+## License
+
+MIT — see [`LICENSE`](LICENSE). Original author: Tapiz Labs.

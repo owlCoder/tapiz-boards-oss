@@ -1,0 +1,78 @@
+import type { BoardRepo } from "@/application/ports";
+import {
+  getColumns,
+  getColumnById,
+  createColumn,
+  renameColumn,
+  setColumnWipLimit,
+  setColumnDone,
+  removeColumn,
+} from "./board/column.queries";
+import {
+  getBoardWithStories,
+  getStoryById,
+  getStoriesByProject,
+  getStoriesAssignedToUser,
+  getStoriesBySprint,
+  getStoriesBySprints,
+  listStories,
+  createStory,
+  updateStory,
+  updateStoryDetails,
+  updateStoryPlacement,
+  placeUnassignedStoriesInColumn,
+  finishSprintPlacements,
+  removeStory,
+} from "./board/story.queries";
+import {
+  nextStoryPosition,
+  moveStory,
+} from "./board/move.queries";
+import {
+  getTasks,
+  getTaskById,
+  addTask,
+  setTaskDone,
+  removeTask,
+} from "./board/task.queries";
+import {
+  getComments,
+  getCommentById,
+  addComment,
+  removeComment,
+} from "./board/comment.queries";
+
+export const boardRepo: BoardRepo = {
+  columns: getColumns,
+  columnById: getColumnById,
+  createColumn,
+  renameColumn,
+  setColumnWipLimit,
+  setColumnDone,
+  removeColumn,
+  boardWithStories: getBoardWithStories,
+  backlog: (projectId) => listStories(projectId, null),
+  storiesByProject: getStoriesByProject,
+  assignedToUser: getStoriesAssignedToUser,
+  storyById: getStoryById,
+  storiesBySprint: getStoriesBySprint,
+  storiesBySprints: getStoriesBySprints,
+  createStory,
+  updateStory,
+  updateStoryDetails,
+  updateStoryPlacement,
+  placeUnassignedStoriesInColumn,
+  finishSprintPlacements,
+  removeStory,
+  nextStoryPosition,
+  moveStory,
+  tasks: getTasks,
+  taskById: getTaskById,
+  addTask,
+  setTaskDone,
+  removeTask,
+  comments: getComments,
+  commentById: getCommentById,
+  addComment,
+  removeComment,
+};

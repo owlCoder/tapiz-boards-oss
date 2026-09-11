@@ -1,0 +1,212 @@
+/* ==========================================================================
+   Auth stranice — vizuelni sloj usklađen sa Tapiz LMS auth dizajnom (/ui).
+   Skopirano iz tapiz-reactjs-ui `login-form.css`; scope-ovano kroz `.auth-page`
+   da ne curi u app shell. Klase zamenjuju ranije inline arbitrary-value Tailwind.
+   ========================================================================== */
+
+.auth-page {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  isolation: isolate;
+  color: var(--color-txt-1);
+  background:
+    radial-gradient(38rem 28rem at 8% -6%, color-mix(in srgb, var(--color-primary-300) 13%, transparent), transparent),
+    radial-gradient(32rem 26rem at 100% 4%, color-mix(in srgb, var(--color-signal-400) 9%, transparent), transparent),
+    var(--color-ink-000);
+}
+
+html:not(.dark) .auth-page {
+  background:
+    radial-gradient(38rem 28rem at 8% -6%, color-mix(in srgb, var(--color-primary-300) 13%, transparent), transparent),
+    radial-gradient(32rem 26rem at 100% 4%, color-mix(in srgb, var(--color-signal-400) 10%, transparent), transparent),
+    linear-gradient(180deg, var(--color-ink-000), color-mix(in srgb, var(--color-ink-100) 55%, var(--color-ink-000)) 60%, var(--color-ink-000));
+}
+
+/* bočni / brend panel */
+.auth-aside {
+  position: relative;
+  overflow: hidden;
+  border-right: 1px solid var(--color-border);
+  background:
+    radial-gradient(36rem 30rem at 22% 0%, color-mix(in srgb, var(--color-primary-300) 14%, transparent), transparent 60%),
+    linear-gradient(160deg, color-mix(in srgb, var(--color-ink-200) 94%, transparent), var(--color-ink-100));
+}
+
+.auth-aside::before,
+.auth-aside::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  border-radius: 999px;
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+.auth-aside::before {
+  width: 26rem;
+  height: 26rem;
+  top: -8rem;
+  left: -6rem;
+  opacity: .5;
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-primary-300) 40%, transparent), transparent 65%);
+}
+
+.auth-aside::after {
+  width: 22rem;
+  height: 22rem;
+  bottom: -8rem;
+  right: -7rem;
+  opacity: .4;
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-signal-400) 30%, transparent), transparent 65%);
+}
+
+/* gradijentni akcenat tekst */
+.auth-accent {
+  background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-300));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* zaobljena kartica (stat blok) */
+.auth-card {
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--color-ink-200) 72%, transparent);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+/* mono pill chip */
+.auth-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .35rem .72rem;
+  border: 1px solid var(--color-border-hi);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-primary-300) 8%, transparent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--color-txt-3);
+}
+
+/* Boards auth — product-specific, quieter and more purposeful than the app shell. */
+.auth-page {
+  background:
+    radial-gradient(32rem 26rem at 98% 0%, color-mix(in srgb, #7257c7 9%, transparent), transparent 72%),
+    var(--color-ink-000);
+}
+
+.auth-aside {
+  border-right-color: color-mix(in srgb, var(--color-border) 82%, transparent);
+  background:
+    radial-gradient(34rem 28rem at 10% 10%, color-mix(in srgb, #7257c7 22%, transparent), transparent 65%),
+    var(--color-ink-100);
+}
+
+.auth-board-pattern { position:absolute; z-index:0; inset:5.5rem -9rem 3.5rem -5rem; display:grid; grid-template-columns:repeat(3,minmax(180px,1fr)); gap:.8rem; pointer-events:none; opacity:.4; transform:rotate(-3deg); -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.84),rgba(0,0,0,.3) 72%,transparent); mask-image:linear-gradient(to bottom,rgba(0,0,0,.84),rgba(0,0,0,.3) 72%,transparent); }
+.auth-board-lane { display:flex; flex-direction:column; gap:.7rem; padding:.85rem; border:1px solid color-mix(in srgb,var(--color-border-hi) 68%,transparent); border-radius:18px; background:color-mix(in srgb,var(--color-ink-200) 32%,transparent); }
+.auth-board-lane:nth-child(2) { transform:translateY(2.5rem); }
+.auth-board-lane:nth-child(3) { transform:translateY(1rem); }
+.auth-board-lane b { width:38%; height:.4rem; margin:.1rem 0 .3rem; border-radius:999px; background:color-mix(in srgb,#7257c7 20%,var(--color-border)); }
+.auth-board-lane i { display:block; height:clamp(4.5rem,8vw,7rem); border:1px solid color-mix(in srgb,var(--color-border-hi) 68%,transparent); border-radius:13px; background:linear-gradient(110deg,color-mix(in srgb,var(--color-ink-200) 58%,transparent),color-mix(in srgb,var(--color-ink-300) 25%,transparent)); box-shadow:inset 3px 0 0 color-mix(in srgb,#7257c7 14%,transparent); }
+.auth-board-lane i:nth-of-type(2) { width:86%; align-self:flex-end; }
+.auth-board-lane:nth-child(2) i:first-of-type { height:clamp(6rem,10vw,8.5rem); }
+.auth-edge-cards { position:absolute; z-index:0; top:20%; right:-52px; display:grid; gap:.65rem; width:112px; pointer-events:none; opacity:.58; transform:rotate(4deg); }
+.auth-edge-cards i { position:relative; display:block; height:42px; border:1px solid color-mix(in srgb,var(--color-border-hi) 74%,transparent); border-radius:10px; background:color-mix(in srgb,var(--color-ink-200) 72%,transparent); box-shadow:0 14px 30px -25px color-mix(in srgb,#7257c7 65%,transparent); }
+.auth-edge-cards i::before { content:""; position:absolute; top:11px; left:12px; width:7px; height:7px; border-radius:50%; background:#7257c7; box-shadow:0 0 0 4px color-mix(in srgb,#7257c7 11%,transparent); }
+.auth-edge-cards i::after { content:""; position:absolute; top:13px; right:12px; left:30px; height:4px; border-radius:999px; background:color-mix(in srgb,var(--color-txt-4) 18%,transparent); box-shadow:0 9px 0 color-mix(in srgb,var(--color-txt-4) 11%,transparent); }
+.auth-edge-cards i:nth-child(2) { width:82%; }
+
+.auth-aside::before {
+  width: 30rem;
+  height: 30rem;
+  top: auto;
+  bottom: -14rem;
+  left: -12rem;
+  opacity: .35;
+  background: radial-gradient(circle, color-mix(in srgb, #ef6a70 32%, transparent), transparent 68%);
+}
+
+.auth-aside::after {
+  width: 28rem;
+  height: 28rem;
+  top: -13rem;
+  right: -12rem;
+  bottom: auto;
+  opacity: .42;
+  background: radial-gradient(circle, color-mix(in srgb, #7257c7 38%, transparent), transparent 67%);
+}
+
+.auth-product-label { color:#6344bd; font-weight:800; letter-spacing:.14em; }
+html.dark .auth-product-label { color:#a993f0; }
+.auth-pitch { max-width: 42rem; }
+.auth-pitch > div:first-child { color: #7257c7; font-weight: 800; letter-spacing: .16em; }
+.auth-pitch h1 { max-width: 11ch; font-size: clamp(3rem, 4.7vw, 4.7rem); line-height: .91; letter-spacing: -.065em; }
+.auth-accent { background: linear-gradient(110deg, #7257c7, #9a83e8 58%, #ef6a70); -webkit-background-clip: text; background-clip: text; }
+.auth-pitch > p { max-width: 52ch; color: var(--color-txt-2); font-size: .92rem; line-height: 1.65; }
+
+.auth-workflow {
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-ink-200) 78%, transparent);
+}
+.auth-workflow > div { position: relative; padding: 1rem; }
+.auth-workflow > div:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: -.42rem;
+  display: grid;
+  place-items: center;
+  width: .85rem;
+  height: .85rem;
+  border-radius: 50%;
+  background: var(--color-ink-200);
+  color: #7257c7;
+  font-size: .62rem;
+  transform: translateY(-50%);
+}
+.auth-workflow > div > div:first-child { font-size: .78rem; }
+.auth-workflow > div > div:last-child { font-size: .6rem; letter-spacing: .08em; }
+
+.auth-chip { border-radius: 6px; border-color: color-mix(in srgb, #7257c7 20%, var(--color-border)); background: color-mix(in srgb, #7257c7 7%, transparent); color: var(--color-txt-3); font-size: 9px; font-weight: 750; }
+.auth-aside-footer { min-height:64px; border-top:1px solid color-mix(in srgb,var(--color-border) 78%,transparent); background:color-mix(in srgb,var(--color-ink-100) 76%,transparent); backdrop-filter:blur(14px); }
+.auth-footer-brand { display:flex; align-items:center; gap:.65rem; color:var(--color-txt-1); }
+.auth-footer-brand>svg { flex:none; color:var(--color-txt-1); }
+.auth-footer-copy { display:grid; gap:.08rem; line-height:1.1; }
+.auth-footer-copy strong { color:var(--color-txt-2); font-size:.68rem; font-weight:750; letter-spacing:.01em; }
+.auth-footer-copy small { color:var(--color-txt-4); font-family:var(--font-mono); font-size:.52rem; letter-spacing:.1em; text-transform:uppercase; }
+
+.auth-main { min-width: 0; }
+.auth-controls button:focus,
+.auth-controls button:focus-visible {
+  outline: 2px solid color-mix(in srgb, #7257c7 48%, transparent) !important;
+  outline-offset: 2px !important;
+  border-radius: 6px;
+  box-shadow: none !important;
+}
+.auth-form-shell { max-width: 25.5rem; }
+.auth-form-shell h1 { font-size: clamp(2rem, 3vw, 2.45rem); letter-spacing: -.045em; }
+.auth-form-shell form > div { animation-fill-mode: both; }
+.auth-page .auth-input-group { border-radius: 9px; background: var(--color-ink-100); }
+.auth-page .auth-input-group:focus-within { border-color: color-mix(in srgb, #7257c7 78%, var(--color-border-hi)); box-shadow: 0 0 0 3px color-mix(in srgb, #7257c7 12%, transparent); }
+.auth-page .auth-input-group input { min-height: 2.75rem; }
+.auth-page .auth-form-shell button[type="submit"] { min-height: 2.75rem; border-radius: 8px; }
+
+@media (max-width: 1023px) {
+  .auth-main { padding-top: 6rem; }
+  .auth-mobile-brand { position: absolute; top: 1.25rem; left: 1.25rem; margin: 0; }
+}
+
+@media (max-width: 520px) {
+  .auth-controls { top: .85rem; right: .85rem; }
+  .auth-mobile-brand { top: 1rem; left: 1rem; }
+  .auth-mobile-brand a span { display: none; }
+  .auth-main { justify-content: flex-start; padding: 7rem 1.1rem 2rem; }
+  .auth-form-shell .grid-cols-2 { grid-template-columns: 1fr; }
+}
