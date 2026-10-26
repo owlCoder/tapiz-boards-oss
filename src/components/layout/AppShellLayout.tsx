@@ -15,6 +15,7 @@ import { MobileMoreSheet, type AppNavGroup } from "@/components/layout/MobileMor
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { SidePanel } from "@/components/layout/SidePanel";
 
+const BROWSER_DEMO = process.env.NEXT_PUBLIC_BROWSER_DEMO === "true";
 const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "0.0.0";
 
 interface AppShellLayoutProps {
@@ -134,7 +135,7 @@ function AppShell({ user, children }: AppShellLayoutProps) {
             onToggleCollapsed={toggleSidebarCollapsed}
             onSettings={() => setSettingsOpen(true)}
             onAppearance={() => setAppearanceOpen(true)}
-            onLogout={() => void logoutAction()}
+            onLogout={BROWSER_DEMO ? undefined : () => void logoutAction()}
           />
           <main className="min-w-0 flex-1">
             <div className="w-full px-6 py-6">
@@ -187,7 +188,7 @@ function AppShell({ user, children }: AppShellLayoutProps) {
         onClose={() => setMoreSheetOpen(false)}
         onSettings={() => setSettingsOpen(true)}
         onAppearance={() => setAppearanceOpen(true)}
-        onLogout={() => void logoutAction()}
+        onLogout={BROWSER_DEMO ? undefined : () => void logoutAction()}
       />
       <BoardsSettingsDialog open={settingsOpen} onClose={() => setSettingsOpen(false)} user={user} />
       <SidePanel

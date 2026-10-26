@@ -35,7 +35,7 @@ export function DashboardAppInfoCard() {
           </div>
           <span className="text-[11px] font-semibold text-txt-2">Tapiz Boards OSS</span>
         </div>
-        <a
+        <Link
           href="/status"
           target="_blank"
           rel="noreferrer"
@@ -43,7 +43,7 @@ export function DashboardAppInfoCard() {
         >
           <span className="inline-block h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-good" />
           {t.statusLinkLabel}
-        </a>
+        </Link>
       </div>
 
       <div className="flex flex-col gap-4 bg-ink-200 p-4">

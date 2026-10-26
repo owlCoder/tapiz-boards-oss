@@ -29,17 +29,11 @@ jobs:
       - name: Install packages
         run: npm install --no-audit --no-fund
 
-      - name: Bundle standalone browser-only demo
-        run: |
-          mkdir -p dist-pages/assets
-          cp pages-demo/index.html dist-pages/index.html
-          touch dist-pages/.nojekyll
-          npx --yes esbuild@0.25.12 pages-demo/main.tsx \
-            --bundle --minify --platform=browser --format=esm \
-            --target=es2020 --outdir=dist-pages/assets --alias:@=./src
-          test -s dist-pages/index.html
-          test -s dist-pages/assets/main.js
-          test -s dist-pages/assets/main.css
+      - name: Build browser demo with original OSS components
+        run: npm run build
+
+      - name: Verify local action contracts
+        run: npm run test:demo
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4

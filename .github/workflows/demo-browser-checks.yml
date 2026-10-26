@@ -25,3 +25,5 @@ jobs:
         run: npm run typecheck
       - name: Production build (no database)
         run: npm run build
+      - name: Local action contracts
+        run: npm run test:demo

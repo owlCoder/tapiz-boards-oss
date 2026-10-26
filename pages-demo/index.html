@@ -4,17 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0b5e66">
-  <meta name="description" content="Tapiz Boards interaktivni demonstracioni Kanban i sprint alat. Bez naloga i baze.">
-  <title>Tapiz Boards — Demo za nastavu</title>
-  <script>
-    try {
-      if (localStorage.getItem("tb-theme") === "dark") document.documentElement.classList.add("dark");
-    } catch (_e) { /* In private browsing, theme defaults to light. */ }
-  </script>
-  <link rel="stylesheet" href="./assets/main.css">
-  <script type="module" src="./assets/main.js"></script>
+  <meta name="description" content="Tapiz Boards OSS — isti interfejs, demo podaci za vežbe, bez naloga i baze.">
+  <title>Tapiz Boards OSS — Demo za vežbe</title>
+  <script>try{document.documentElement.classList.toggle('dark',localStorage.getItem('tb-theme')==='dark')}catch(e){}</script>
+  <!-- BUILD_STYLES -->
+  <!-- BUILD_SCRIPT -->
 </head>
-<body>
-  <div id="root"></div>
-</body>
+<body class="oss-app min-h-full flex flex-col"><div id="root"></div></body>
 </html>

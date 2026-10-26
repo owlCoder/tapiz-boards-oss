@@ -19,7 +19,7 @@ interface AppSidebarProps {
   onToggleCollapsed: () => void;
   onSettings: () => void;
   onAppearance: () => void;
-  onLogout: () => void;
+  onLogout?: () => void;
 }
 
 export function AppSidebar({
@@ -119,9 +119,9 @@ export function AppSidebar({
               </div>
             </div>
             <div className="my-auto flex shrink-0 items-center gap-0.5">
-              <button onClick={onLogout} title={dict.nav.logout} className="flex cursor-pointer border-none bg-transparent p-1.5 text-warn">
+              {onLogout && <button onClick={onLogout} title={dict.nav.logout} className="flex cursor-pointer border-none bg-transparent p-1.5 text-warn">
                 <span className="inline-flex h-4 w-4 items-center justify-center"><LogOut size={16} /></span>
-              </button>
+              </button>}
             </div>
           </div>
         )}
@@ -158,7 +158,7 @@ export function AppSidebar({
             </span>
           </button>
 
-          {collapsed && (
+          {collapsed && onLogout && (
             <button onClick={onLogout} title={dict.nav.logout} className="flex cursor-pointer border-none bg-transparent p-1.5 text-warn">
               <span className="inline-flex h-4 w-4 items-center justify-center"><LogOut size={16} /></span>
             </button>

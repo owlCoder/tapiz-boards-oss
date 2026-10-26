@@ -29,7 +29,7 @@ interface MobileMoreSheetProps {
   onClose: () => void;
   onSettings: () => void;
   onAppearance: () => void;
-  onLogout: () => void;
+  onLogout?: () => void;
 }
 
 /* Bottom sheet "Više" meni — porta /ui MobileDrawerSheet šablona na boards. */

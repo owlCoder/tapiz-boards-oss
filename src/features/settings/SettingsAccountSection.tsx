@@ -37,9 +37,9 @@ export function SettingsAccountSection({ user }: SettingsAccountSectionProps) {
   return (
     <div className="space-y-5 animate-in fade-in duration-200">
       <SettingsProfileCard user={user} />
-      <SettingsSection title={t.securityTitle}>
+      {process.env.NEXT_PUBLIC_BROWSER_DEMO !== "true" && <SettingsSection title={t.securityTitle}>
         <SRow icon={<Lock size={18} />} label={t.changePasswordTitle} desc={t.changePasswordDescription} onClick={() => setView("password")} />
-      </SettingsSection>
+      </SettingsSection>}
       <SettingsSection title={t.personalTitle}>
         <SRow icon={<Edit size={18} />} label={t.editProfileTitle} desc={t.editProfileDescription} onClick={() => setView("edit")} />
       </SettingsSection>

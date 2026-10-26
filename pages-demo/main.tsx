@@ -1,14 +1,27 @@
 import { createRoot } from "react-dom/client";
-import { ThemeProvider } from "../src/components/theme/ThemeProvider";
-import DemoApp from "../src/features/demo/DemoApp";
-import "./site.css";
-import "../src/features/demo/demo.css";
+import "@tapizlabs/ui/fonts";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { AppToastProvider } from "@/components/layout/AppToastProvider";
+import DemoApp from "./DemoApp";
+import { getState, startStorageSync } from "./runtime/store";
 
-// The full classroom demo runs in the browser, without Next.js server actions.
+getState();
+startStorageSync();
 const root = document.getElementById("root");
 if (!root) throw new Error("Demo root element missing");
 createRoot(root).render(
   <ThemeProvider>
-    <DemoApp />
-  </ThemeProvider>
+    <AppToastProvider>
+      <DemoApp />
+    </AppToastProvider>
+  </ThemeProvider>,
 );
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", () => {
+    void navigator.serviceWorker
+      .register("./sw.js", { scope: "./", updateViaCache: "none" })
+      .catch(() => {
+        /* The app still runs when offline caching is unavailable. */
+      });
+  });
+}

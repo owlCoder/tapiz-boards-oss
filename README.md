@@ -1,6 +1,6 @@
 # Tapiz Boards — Open Source Edition
 
-> **Teaching demo (no login, no database):** Switch to branch [`demo/browser-only-no-auth`](https://github.com/owlCoder/tapiz-boards-oss/tree/demo/browser-only-no-auth), run `npm install && npm run dev` and open http://localhost:3004. Projects, boards, sprints, checklists and comments run in browser localStorage. See [classroom instructions](docs/BROWSER_DEMO.md). No MySQL or `.env` is needed for this branch.
+> **Live classroom demo:** [Open the demo](https://owlcoder.github.io/tapiz-boards-oss/). This branch (`demo/browser-only-no-auth`) uses the actual OSS interface with realistic fictional data, no login/database and browser localStorage. Run `npm install && npm run dev` and open http://localhost:3004. See [classroom instructions](docs/BROWSER_DEMO.md). The real self-hosted application remains on `main`.
 
 A self-hosted Kanban and sprint-planning tool for small teams: backlog, board with drag & drop, sprints, comments, and a simple project/trash model. MIT licensed.
 

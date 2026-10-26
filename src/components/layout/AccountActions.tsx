@@ -39,7 +39,7 @@ interface AccountActionsProps {
   onClose: () => void;
   onSettings: () => void;
   onAppearance: () => void;
-  onLogout: () => void;
+  onLogout?: () => void;
 }
 
 export function AccountActions({ onClose, onSettings, onAppearance, onLogout }: AccountActionsProps) {
@@ -48,7 +48,7 @@ export function AccountActions({ onClose, onSettings, onAppearance, onLogout }: 
   return (
     <div className="mb-4">
       <p className="px-4 pb-2 pt-2 text-[11px] font-semibold text-txt-3">{dict.nav.account}</p>
-      <div className="grid grid-cols-3 gap-3 px-4">
+      <div className={`grid ${onLogout ? "grid-cols-3" : "grid-cols-2"} gap-3 px-4`}>
         <ActionButton
           label={dict.nav.settings}
           icon={<Gear />}
@@ -65,7 +65,7 @@ export function AccountActions({ onClose, onSettings, onAppearance, onLogout }: 
             onAppearance();
           }}
         />
-        <ActionButton
+        {onLogout && <ActionButton
           warn
           label={dict.nav.logout}
           icon={<LogOut />}
@@ -73,7 +73,7 @@ export function AccountActions({ onClose, onSettings, onAppearance, onLogout }: 
             onClose();
             onLogout();
           }}
-        />
+        />}
       </div>
     </div>
   );
