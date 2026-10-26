@@ -1,0 +1,27 @@
+name: Browser demo checks
+
+on:
+  push:
+    branches:
+      - demo/browser-only-no-auth
+  workflow_dispatch:
+
+jobs:
+  verify-demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: package.json
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Lint
+        run: npm run lint
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Production build (no database)
+        run: npm run build
