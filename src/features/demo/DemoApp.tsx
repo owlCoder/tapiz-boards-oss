@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import {
   DEMO_STORAGE_KEY, STARTER_DEMO, blankStory, formattedDate,
@@ -23,17 +23,17 @@ const tabs: { id: Tab; icon: string; label: string }[] = [
 ];
 
 function Button({ children, onClick, variant = "ghost", title, disabled, type = "button" }: {
-  children: React.ReactNode; onClick?: () => void; variant?: "primary" | "ghost" | "danger";
+  children: ReactNode; onClick?: () => void; variant?: "primary" | "ghost" | "danger";
   title?: string; disabled?: boolean; type?: "button" | "submit";
 }) {
   return <button type={type} disabled={disabled} title={title} onClick={onClick} className={`demo-btn demo-btn--${variant}`}>{children}</button>;
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, children }: { label: string; children: ReactNode }) {
   return <label className="demo-field"><span>{label}</span>{children}</label>;
 }
 
-function Badge({ children, tone = "" }: { children: React.ReactNode; tone?: string }) {
+function Badge({ children, tone = "" }: { children: ReactNode; tone?: string }) {
   return <span className={`demo-badge ${tone ? `demo-badge--${tone}` : ""}`}>{children}</span>;
 }
 
@@ -298,11 +298,7 @@ export default function DemoApp() {
   const doneCount = boardStories.filter((s) => s.columnId === doneId).length;
   const donePoints = boardStories.filter((s) => s.columnId === doneId).reduce((sum, s) => sum + s.points, 0);
   const totalPoints = boardStories.reduce((sum, s) => sum + s.points, 0);
-  const visibleMyWork = useMemo(() =>
-    allProjectStories.filter((s) => s.assignee === selectedUser && storyMatches(s)),
-    // Filters are deliberately controlled in the parent; the array is inexpensive in this demo.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data, selectedUser, search, priorityFilter, assigneeFilter]);
+  const visibleMyWork = allProjectStories.filter((s) => s.assignee === selectedUser && storyMatches(s));
   const isProjectTab = tab === "projects" || tab === "trash";
   const noProject = !project && !isProjectTab && tab !== "activity";
 
