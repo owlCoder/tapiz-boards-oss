@@ -27,5 +27,5 @@ export default auth((req) => {
 
 export const config = {
   // api/auth + api/cron self-authenticate and skip the session proxy.
-  matcher: ["/((?!api/auth|api/cron|_next/static|_next/image|favicon.ico|icon.svg).*)"],
+  matcher: ["/((?!$|demo(?:/|$)|api/auth|api/cron|_next/static|_next/image|favicon.ico|icon.svg).*)"],
 };
