@@ -1,4 +1,4 @@
-name: Publish browser demo to gh-pages branch
+name: Publish browser demo to GitHub Pages
 
 on:
   push:
@@ -7,14 +7,14 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: pages-teaching-demo
   cancel-in-progress: true
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -41,18 +41,22 @@ jobs:
           test -s dist-pages/assets/main.js
           test -s dist-pages/assets/main.css
 
-      # Pages' Actions environment is not initialized for this repository.
-      # Publish static files to a dedicated branch instead, without an IAM/OIDC deployment.
-      # The repository owner only needs to select 'Deploy from a branch' -> 'gh-pages' -> '/ (root)'.
-      - name: Commit compiled site to gh-pages
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd dist-pages
-          git init -b gh-pages
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Publish teaching demo for ${GITHUB_SHA}"
-          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push --force origin HEAD:gh-pages
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist-pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

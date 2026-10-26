@@ -4,6 +4,12 @@ This branch is a **browser-only teaching sandbox**. It is deliberately separate 
 
 ## Start in under a minute
 
+The published classroom demo is available at **https://owlcoder.github.io/tapiz-boards-oss/**.
+Pushes to `demo/browser-only-no-auth` build the standalone browser bundle and deploy it directly through GitHub Pages Actions.
+Repository Pages must use **GitHub Actions** as its source, and the `github-pages` environment must allow deployments from `demo/browser-only-no-auth`.
+
+For local development:
+
 Prerequisites: Node.js 20+ and npm. **No MySQL, Docker, `.env`, Auth.js secrets or accounts are required for the demo.**
 
 ```bash
