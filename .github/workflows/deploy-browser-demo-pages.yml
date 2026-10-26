@@ -1,0 +1,62 @@
+name: Publish browser demo to GitHub Pages
+
+on:
+  push:
+    branches:
+      - demo/browser-only-no-auth
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-teaching-demo
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout demo branch
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install packages
+        run: npm install --no-audit --no-fund
+
+      - name: Bundle standalone client-side demo
+        run: |
+          mkdir -p dist-pages/assets
+          cp pages-demo/index.html dist-pages/index.html
+          touch dist-pages/.nojekyll
+          npx --yes esbuild@0.25.12 pages-demo/main.tsx \
+            --bundle --minify --platform=browser --format=esm \
+            --target=es2020 --outdir=dist-pages/assets --alias:@=./src
+          test -s dist-pages/index.html
+          test -s dist-pages/assets/main.js
+          test -s dist-pages/assets/main.css
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist-pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
