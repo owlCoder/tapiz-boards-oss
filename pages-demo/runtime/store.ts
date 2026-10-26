@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { createSeed } from "./seed";
+import { upgradeStoryCopy } from "./upgrade-story-copy";
 import { STORAGE_KEY, validateState, type LocalState } from "./model";
 
 let state: LocalState | null = null;
@@ -27,8 +28,16 @@ export function getState(): LocalState {
   if (state) return state;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    state = raw ? validateState(JSON.parse(raw)) : createSeed();
-    if (!raw) localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const loaded = raw ? validateState(JSON.parse(raw)) : createSeed();
+    state = upgradeStoryCopy(loaded);
+    if (!raw || state !== loaded) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch {
+        warning =
+          "Demo primeri su učitani, ali nije moguće sačuvati podatke u ovom browseru. Izvezite JSON kao rezervnu kopiju.";
+      }
+    }
   } catch {
     state = createSeed();
     warning =

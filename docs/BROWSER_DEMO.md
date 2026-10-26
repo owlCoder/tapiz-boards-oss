@@ -33,6 +33,12 @@ On the first visit, the browser creates fictional, realistic fixtures:
 - Eighteen stories across active, planned and completed sprints, including backlog items, assignments, acceptance criteria, priorities, points, deadlines, checklist items and comments.
 - Completed-sprint retrospective notes, calendar activity and one archived project for a restore exercise.
 
+Each story has a short product-oriented title and a description in this form: **“Ja kao [uloga] hoću da [mogućnost], kako bih [korist].”** The description states the user need and value without implementation details. Technical work and concrete acceptance checks belong in checklist tasks, not in the story sentence.
+
+For example: “Ja kao student hoću da imam mogućnost zakazivanja termina konsultacija, kako bih rešio nedoumice u vezi sa gradivom.”
+
+When updating from the original fixture wording, the app upgrades only examples whose title and description are both unchanged. Learner-written text, new/deleted stories, assignments, sprint/column positions, comments and checklists are retained; no reset is needed.
+
 Dates are relative to the first visit (or reset), so the examples remain useful next semester. The stored dates stay stable between visits.
 
 ## Persistence, offline use and backups

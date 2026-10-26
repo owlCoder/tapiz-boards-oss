@@ -302,3 +302,57 @@ test("participant switching changes only the local identity", () => {
   });
   assert.equal(getState().currentUserId, "marko");
 });
+
+test("fixture wording upgrades preserve the learner's workspace and are idempotent", async () => {
+  const { upgradeStoryCopy } = await import("./upgrade-story-copy");
+  const { LEGACY_STORY_COPY } = await import("./legacy-story-copy");
+  const legacy = createSeed();
+  legacy.stories.forEach((story) =>
+    Object.assign(
+      story,
+      LEGACY_STORY_COPY[story.id as keyof typeof LEGACY_STORY_COPY],
+    ),
+  );
+  legacy.stories[0].position = 42;
+  legacy.stories[0].columnId = "c-col-2";
+  legacy.stories[0].assigneeId = "ana";
+  legacy.tasks[1].done = true;
+  const before = structuredClone(legacy);
+  const updated = upgradeStoryCopy(legacy);
+  assert.equal(
+    updated.stories[0].description,
+    createSeed().stories[0].description,
+  );
+  assert.equal(updated.stories[0].position, 42);
+  assert.equal(updated.stories[0].columnId, "c-col-2");
+  assert.equal(updated.stories[0].assigneeId, "ana");
+  assert.deepEqual(updated.tasks, before.tasks);
+  assert.deepEqual(updated.comments, before.comments);
+  assert.deepEqual(updated.sprints, before.sprints);
+  assert.deepEqual(legacy, before);
+  assert.equal(upgradeStoryCopy(updated), updated);
+});
+
+test("fixture wording upgrades do not overwrite edited stories or resurrect deleted ones", async () => {
+  const { upgradeStoryCopy } = await import("./upgrade-story-copy");
+  const { LEGACY_STORY_COPY } = await import("./legacy-story-copy");
+  const legacy = createSeed();
+  legacy.stories.forEach((story) =>
+    Object.assign(
+      story,
+      LEGACY_STORY_COPY[story.id as keyof typeof LEGACY_STORY_COPY],
+    ),
+  );
+  legacy.stories[0].title = "Moj prilagođeni naslov";
+  legacy.stories[1].description =
+    "Ja kao student hoću da promenim svoj termin, kako bih uskladio obaveze.";
+  const edited = structuredClone(legacy.stories.slice(0, 2));
+  legacy.stories = legacy.stories.filter((story) => story.id !== "c-story-3");
+  const updated = upgradeStoryCopy(legacy);
+  assert.deepEqual(updated.stories.slice(0, 2), edited);
+  assert.equal(
+    updated.stories.some((story) => story.id === "c-story-3"),
+    false,
+  );
+  assert.equal(updated.stories.length, legacy.stories.length);
+});
