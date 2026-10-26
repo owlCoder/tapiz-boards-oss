@@ -1,4 +1,4 @@
-name: Publish browser demo to GitHub Pages
+name: Publish browser demo to gh-pages branch
 
 on:
   push:
@@ -7,19 +7,18 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages-teaching-demo
   cancel-in-progress: true
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Checkout demo branch
+      - name: Checkout classroom demo
         uses: actions/checkout@v4
 
       - name: Use Node.js 22
@@ -30,7 +29,7 @@ jobs:
       - name: Install packages
         run: npm install --no-audit --no-fund
 
-      - name: Bundle standalone client-side demo
+      - name: Bundle standalone browser-only demo
         run: |
           mkdir -p dist-pages/assets
           cp pages-demo/index.html dist-pages/index.html
@@ -42,21 +41,18 @@ jobs:
           test -s dist-pages/assets/main.js
           test -s dist-pages/assets/main.css
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: dist-pages
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # Pages' Actions environment is not initialized for this repository.
+      # Publish static files to a dedicated branch instead, without an IAM/OIDC deployment.
+      # The repository owner only needs to select 'Deploy from a branch' -> 'gh-pages' -> '/ (root)'.
+      - name: Commit compiled site to gh-pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd dist-pages
+          git init -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish teaching demo for ${GITHUB_SHA}"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push --force origin HEAD:gh-pages
