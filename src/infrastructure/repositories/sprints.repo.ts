@@ -1,10 +1,13 @@
-import { and, asc, eq, isNull, ne, or, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, isNull, ne, or, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/mysql-core";
 import { db } from "@/infrastructure/db/client";
 import { sprintRetroItems, sprints, stories, users } from "@/infrastructure/db/schema";
 import type { SprintsRepo } from "@/application/ports";
 import { lockProject } from "./board/move.queries";
 import type {
   RetroCategory,
+  ProjectExportRetrospective,
+  ProjectExportSprint,
   SprintDto,
   SprintRetroItemDto,
   SprintStatus,
@@ -29,11 +32,33 @@ const retroItemColumns = {
   category: sprintRetroItems.category,
   body: sprintRetroItems.body,
   authorId: sprintRetroItems.authorId,
-  authorName: sql<string>`concat(${users.firstName}, ' ', ${users.lastName})`,
+  authorName: sql<string>`coalesce(concat(${users.firstName}, ' ', ${users.lastName}), nullif(${sprintRetroItems.authorName}, ''), '')`,
+  authorEmail: sql<string>`coalesce(${users.email}, nullif(${sprintRetroItems.authorEmail}, ''), '')`,
   createdAt: sql<string>`date_format(${sprintRetroItems.createdAt}, '%d.%m.%Y.')`,
 };
+const exportRetroAuthors = alias(users, "export_retro_authors");
 
 export const sprintsRepo: SprintsRepo = {
+  async listForExport(projectId): Promise<ProjectExportSprint[]> {
+    const rows = await db
+      .select({
+        id: sprints.id,
+        projectId: sprints.projectId,
+        name: sprints.name,
+        goal: sprints.goal,
+        startDate: sprints.startDate,
+        endDate: sprints.endDate,
+        status: sprints.status,
+        createdAt: sprints.createdAt,
+        storyCount: sql<number>`(select count(*) from ${stories} where ${stories.sprintId} = ${sprints.id})`.mapWith(Number),
+        totalPoints: sql<number>`(select coalesce(sum(${stories.storyPoints}), 0) from ${stories} where ${stories.sprintId} = ${sprints.id})`.mapWith(Number),
+      })
+      .from(sprints)
+      .where(eq(sprints.projectId, projectId))
+      .orderBy(asc(sprints.createdAt), asc(sprints.startDate), asc(sprints.id));
+    return rows.map((row) => ({ ...row, createdAt: row.createdAt.toISOString() }));
+  },
+
   async listByProject(projectId: string): Promise<SprintDto[]> {
     return db
       .select(sprintColumns)
@@ -159,16 +184,36 @@ export const sprintsRepo: SprintsRepo = {
     return db
       .select(retroItemColumns)
       .from(sprintRetroItems)
-      .innerJoin(users, eq(users.id, sprintRetroItems.authorId))
+      .leftJoin(users, eq(users.id, sprintRetroItems.authorId))
       .where(eq(sprintRetroItems.sprintId, sprintId))
       .orderBy(asc(sprintRetroItems.createdAt), asc(sprintRetroItems.id));
+  },
+
+  async retroItemsForSprintsExport(sprintIds: string[]): Promise<ProjectExportRetrospective[]> {
+    if (sprintIds.length === 0) return [];
+    const rows = await db
+      .select({
+        id: sprintRetroItems.id,
+        sprintId: sprintRetroItems.sprintId,
+        authorId: sprintRetroItems.authorId,
+        authorName: sql<string>`coalesce(concat(${exportRetroAuthors.firstName}, ' ', ${exportRetroAuthors.lastName}), nullif(${sprintRetroItems.authorName}, ''), '')`,
+        authorEmail: sql<string>`coalesce(${exportRetroAuthors.email}, nullif(${sprintRetroItems.authorEmail}, ''), '')`,
+        category: sprintRetroItems.category,
+        body: sprintRetroItems.body,
+        createdAt: sprintRetroItems.createdAt,
+      })
+      .from(sprintRetroItems)
+      .leftJoin(exportRetroAuthors, eq(exportRetroAuthors.id, sprintRetroItems.authorId))
+      .where(inArray(sprintRetroItems.sprintId, sprintIds))
+      .orderBy(asc(sprintRetroItems.createdAt), asc(sprintRetroItems.id));
+    return rows.map((row) => ({ ...row, createdAt: row.createdAt.toISOString() }));
   },
 
   async retroItemById(id: string): Promise<SprintRetroItemDto | null> {
     const rows = await db
       .select(retroItemColumns)
       .from(sprintRetroItems)
-      .innerJoin(users, eq(users.id, sprintRetroItems.authorId))
+      .leftJoin(users, eq(users.id, sprintRetroItems.authorId))
       .where(eq(sprintRetroItems.id, id))
       .limit(1);
     return rows[0] ?? null;
@@ -180,7 +225,12 @@ export const sprintsRepo: SprintsRepo = {
     category: RetroCategory,
     body: string,
   ): Promise<void> {
-    await db.insert(sprintRetroItems).values({ sprintId, authorId, category, body });
+    const [author] = await db.select({
+      authorName: sql<string>`concat(${users.firstName}, ' ', ${users.lastName})`,
+      authorEmail: users.email,
+    }).from(users).where(eq(users.id, authorId)).limit(1);
+    if (!author) throw new Error("Autor retrospektive nije pronađen");
+    await db.insert(sprintRetroItems).values({ sprintId, authorId, ...author, category, body });
   },
 
   async removeRetroItem(id: string): Promise<void> {
