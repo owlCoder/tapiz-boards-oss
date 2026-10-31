@@ -18,9 +18,12 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
+    "db:backfill-import-snapshots": "tsx --env-file=.env scripts/backfill-import-author-snapshots.ts",
+    "db:upgrade": "node scripts/db-upgrade.mjs",
     "create-admin": "tsx --env-file=.env scripts/create-admin.ts",
     "smoke": "tsx --env-file=.env scripts/smoke.ts",
     "test:board": "tsx --env-file=.env scripts/board-integrity.ts",
+    "test:project-import": "tsx --test tests/project-import-validation.test.ts",
     "test:design": "node scripts/check-oss-design.mjs"
   },
   "dependencies": {
@@ -31,6 +34,7 @@
     "@tapizlabs/ui": "^2.3.16",
     "bcryptjs": "^3.0.3",
     "drizzle-orm": "^0.45.2",
+    "fflate": "^0.8.3",
     "mysql2": "^3.22.6",
     "next": "^16.2.10",
     "next-auth": "^5.0.0-beta.31",
