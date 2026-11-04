@@ -3,7 +3,7 @@
    All colors derive from the same root palette as the board and landing.
    Scoped under .auth-page so login-specific patterns do not leak into the app.
    ========================================================================== */
-   /*neki kod za provjeru da li radi*/
+   /*neki kod za provjeru da li radi sadsadasddasdsad*/
 .auth-page {
   position: relative;
   display: flex;
