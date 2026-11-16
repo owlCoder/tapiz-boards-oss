@@ -14,6 +14,7 @@ import { StoryDetailPanel } from "./story/StoryDetailPanel";
 import { SprintCard } from "./sprint/SprintCard";
 import { SprintStats } from "./sprint/SprintStats";
 import { FinishSprintPanel } from "./FinishSprintPanel";
+import { REPORT_TEXT } from "./report/report-text";
 
 interface SprintsViewProps {
   project: ProjectDto;
@@ -37,7 +38,7 @@ export function SprintsView({
 }: SprintsViewProps) {
   const router = useRouter();
   const { showToast } = useToast();
-  const { dict } = useI18n();
+  const { dict, locale } = useI18n();
   const t = dict.sprints;
 
   const [createSprintOpen, setCreateSprintOpen] = useState(false);
@@ -84,6 +85,11 @@ export function SprintsView({
         project={project}
         showProjectMeta={false}
         banner={<InfoBanner text={t.infoBanner} />}
+        actions={canManage ? (
+          <a href={"/reports/projects/" + project.id} target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-lg border border-(--tapiz-border-strong) bg-(--tapiz-bg-surface) px-3 py-2 text-sm font-semibold text-(--tapiz-text-primary) hover:border-(--tapiz-accent)">
+            {REPORT_TEXT[locale].viewReport}
+          </a>
+        ) : undefined}
       />
       <SprintStats
         sprints={sprints}
