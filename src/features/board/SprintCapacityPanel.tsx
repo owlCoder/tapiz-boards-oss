@@ -12,7 +12,7 @@ import {
   memberLoads,
   suggestSprintAssignments,
 } from "@/domain/services/sprint-capacity";
-import { updateStoryFullAction } from "@/lib/actions/board.actions";
+import { assignStorySuggestionAction } from "@/lib/actions/board.actions";
 import { setMemberCapacityAction } from "@/lib/actions/projects.actions";
 import { fmt } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -157,16 +157,11 @@ export function SprintCapacityPanel({
     const story = stories.find((item) => item.id === storyId);
     if (!story) return false;
     setBusyStoryId(storyId);
-    const result = await updateStoryFullAction(projectId, story.id, {
-      title: story.title,
-      description: story.description ?? "",
-      assigneeId: userId,
-      storyPoints: story.storyPoints,
+    const result = await assignStorySuggestionAction(projectId, story.id, userId, {
+      assigneeId: story.assigneeId,
       estimatedHours: story.estimatedHours,
       sprintId: story.sprintId,
       columnId: story.columnId,
-      priority: story.priority,
-      dueDate: story.dueDate,
     });
     setBusyStoryId(null);
     if (!result.ok) {
