@@ -250,6 +250,34 @@ export async function updateStory(
   await db.update(stories).set(input).where(eq(stories.id, id));
 }
 
+/**
+ * Only change the assignee. Reject an outdated capacity suggestion atomically.
+ */
+export async function assignStoryFromSuggestion(
+  projectId: string,
+  storyId: string,
+  newAssigneeId: string,
+  expected: {
+    assigneeId: string | null;
+    estimatedHours: number | null;
+    sprintId: string;
+    columnId: string;
+  },
+): Promise<boolean> {
+  const [result] = await db
+    .update(stories)
+    .set({ assigneeId: newAssigneeId })
+    .where(and(
+      eq(stories.id, storyId),
+      eq(stories.projectId, projectId),
+      eq(stories.sprintId, expected.sprintId),
+      eq(stories.columnId, expected.columnId),
+      expected.assigneeId === null ? isNull(stories.assigneeId) : eq(stories.assigneeId, expected.assigneeId),
+      expected.estimatedHours === null ? isNull(stories.estimatedHours) : eq(stories.estimatedHours, expected.estimatedHours),
+    ));
+  return result.affectedRows > 0;
+}
+
 export async function removeStory(id: string): Promise<void> {
   await db.delete(stories).where(eq(stories.id, id));
 }
