@@ -52,6 +52,12 @@ export interface BoardRepo {
       position?: number;
     },
   ): Promise<void>;
+  assignStoryFromSuggestion(
+    projectId: string,
+    storyId: string,
+    newAssigneeId: string,
+    expected: { assigneeId: string | null; estimatedHours: number | null; sprintId: string; columnId: string },
+  ): Promise<boolean>;
   removeStory(id: string): Promise<void>;
   tasks(storyId: string): Promise<StoryTaskDto[]>;
   taskById(id: string): Promise<StoryTaskDto | null>;
