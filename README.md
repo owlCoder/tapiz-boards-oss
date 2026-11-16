@@ -104,12 +104,15 @@ No LMS, telemetry, or third-party service keys are needed — this edition has n
 
 ### Export
 
-Project managers can export project data from a project board in either format:
+Project owners can export project data from the board in three formats:
 
 - **JSON** — structured data suitable for backup or re-import.
 - **CSV (ZIP)** — separate CSV files for reviewing and analyzing project data in spreadsheet tools.
+- **PDF** — opens a print-ready, complete project report. In the browser print dialog, choose **Save as PDF**. No server-side PDF service is required.
 
 Exports include supported project data such as members, stories, checklist items, comments, retrospectives, and activities.
+
+The full project report is also accessible to the project owner from the **Board** or **Sprints** page via **Full project report**. It includes a summary of all sprints, live story status and points, estimates, each sprint’s stories/checklists/comments and retrospectives, stories not assigned to a sprint, members and the activity log. Report counts reflect the **current** story state, not an immutable historical snapshot of completed sprints.
 
 ### Import
 
@@ -126,7 +129,7 @@ Back up the database and stop application writes before upgrading. Run `npm run 
 ## Checks
 
 ```bash
-npm run test:design && npm run test:project-import && npm run test:sprint-capacity && npm run lint && npm run typecheck && npm run build
+npm run test:design && npm run test:project-import && npm run test:sprint-capacity && npm run test:project-report && npm run lint && npm run typecheck && npm run build
 ```
 
 Smoke test against a real database (creates and cleans up its own throwaway data):

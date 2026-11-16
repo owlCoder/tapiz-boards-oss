@@ -25,6 +25,7 @@
     "test:board": "tsx --env-file=.env scripts/board-integrity.ts",
     "test:project-import": "tsx --test tests/project-import-validation.test.ts",
     "test:sprint-capacity": "tsx --test tests/sprint-capacity.test.ts",
+    "test:project-report": "tsx --test tests/project-report.test.ts",
     "test:design": "node scripts/check-oss-design.mjs"
   },
   "dependencies": {
