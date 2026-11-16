@@ -19,6 +19,7 @@ import {
   getCommentsForStoriesExport,
   createStory,
   updateStory,
+  assignStoryFromSuggestion,
   removeStory,
 } from "./board/story.queries";
 import {
@@ -57,6 +58,7 @@ export const boardRepo: BoardRepo = {
   commentsForStoriesExport: getCommentsForStoriesExport,
   createStory,
   updateStory,
+  assignStoryFromSuggestion,
   removeStory,
   nextStoryPosition,
   moveStory,
