@@ -37,6 +37,7 @@ import { BoardFilters } from "./board/BoardFilters";
 import { useBoardFilters } from "./useBoardFilters";
 import { useBoardDragDrop } from "./useBoardDragDrop";
 import { ProjectExportPanel } from "./board/ProjectExportPanel";
+import { REPORT_TEXT } from "./report/report-text";
 
 interface BoardViewProps {
   project: ProjectDto;
@@ -55,7 +56,7 @@ export function BoardView({
   currentUser,
   canManage,
 }: BoardViewProps) {
-  const { dict } = useI18n();
+  const { dict, locale } = useI18n();
   const canAddMembers = canManage || currentUser.role === "admin";
   const activeSprint = sprints.find((sprint) => sprint.status === "active") ?? null;
   const [columns, setColumns] = useState(initial);
@@ -90,6 +91,11 @@ export function BoardView({
         project={project}
         showProjectMeta={false}
         banner={<InfoBanner text={dict.board.infoBanner} />}
+        actions={canManage ? (
+          <a href={"/reports/projects/" + project.id} target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-lg border border-(--tapiz-border-strong) bg-(--tapiz-bg-surface) px-3 py-2 text-sm font-semibold text-(--tapiz-text-primary) hover:border-(--tapiz-accent)">
+            {REPORT_TEXT[locale].viewReport}
+          </a>
+        ) : undefined}
       />
       <BoardSprintBar sprint={activeSprint} columns={columns} />
       {activeSprint && (
