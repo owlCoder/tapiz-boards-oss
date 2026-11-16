@@ -4,6 +4,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Avatar, Badge, Menu, Select } from "@tapizlabs/ui";
 import { isOverdue, type BoardColumnDto, type StoryDto } from "@/domain/types";
+import { fmt } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
 import { formatIsoDate, todayIso } from "@/lib/date";
 
@@ -92,6 +93,9 @@ export function BacklogStoryRow({
               </Badge>
             )}
             {story.storyPoints !== null && <Badge variant="info">{story.storyPoints} SP</Badge>}
+            {story.estimatedHours !== null && (
+              <Badge variant="muted">{fmt(t.hoursBadge, { hours: story.estimatedHours })}</Badge>
+            )}
             {story.taskCount > 0 && (
               <Badge variant={story.tasksDone === story.taskCount ? "success" : "muted"}>
                 {story.tasksDone}/{story.taskCount}

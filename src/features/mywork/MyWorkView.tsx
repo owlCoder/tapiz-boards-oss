@@ -150,6 +150,9 @@ export function MyWorkView({ firstName, items }: MyWorkViewProps) {
                             </Badge>
                           )}
                           {item.storyPoints !== null && <Badge variant="info">{item.storyPoints} SP</Badge>}
+                          {item.estimatedHours !== null && (
+                            <Badge variant="muted">{fmt(dict.board.hoursBadge, { hours: item.estimatedHours })}</Badge>
+                          )}
                           {item.dueDate !== null && (
                             <span
                               className={`inline-flex items-center gap-1 font-mono text-[11px] ${

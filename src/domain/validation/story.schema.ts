@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { MAX_ESTIMATED_HOURS } from "@/domain/services/sprint-capacity";
 
 export const storySchema = z.object({
   title: z.string().trim().min(1, "Naslov je obavezan").max(255, "Naslov je predugačak"),
@@ -14,6 +15,13 @@ export const storyDetailsSchema = z.object({
     .int("Story points moraju biti ceo broj")
     .min(0, "Story points ne mogu biti negativni")
     .max(100, "Story points su preveliki")
+    .nullable()
+    .default(null),
+  estimatedHours: z
+    .number()
+    .int("Procena mora biti ceo broj sati")
+    .min(0, "Procena ne može biti negativna")
+    .max(MAX_ESTIMATED_HOURS, "Procena je prevelika")
     .nullable()
     .default(null),
   sprintId: z.string().min(1).nullable().default(null),

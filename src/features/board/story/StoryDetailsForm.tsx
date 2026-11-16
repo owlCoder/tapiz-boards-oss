@@ -28,6 +28,7 @@ interface StoryDetailsFormProps {
   assigneeId: string;
   sprintId: string;
   storyPoints: string;
+  estimatedHours: string;
   priority: StoryPriority;
   dueDate: string;
   columns: BoardColumnDto[];
@@ -39,16 +40,17 @@ interface StoryDetailsFormProps {
   onAssigneeChange: (v: string) => void;
   onSprintChange: (v: string) => void;
   onStoryPointsChange: (v: string) => void;
+  onEstimatedHoursChange: (v: string) => void;
   onPriorityChange: (v: StoryPriority) => void;
   onDueDateChange: (v: string) => void;
 }
 
 export function StoryDetailsForm({
   title, description, columnId, assigneeId, sprintId,
-  storyPoints, priority, dueDate,
+  storyPoints, estimatedHours, priority, dueDate,
   columns, members, sprints,
   onTitleChange, onDescriptionChange, onColumnChange,
-  onAssigneeChange, onSprintChange, onStoryPointsChange,
+  onAssigneeChange, onSprintChange, onStoryPointsChange, onEstimatedHoursChange,
   onPriorityChange, onDueDateChange,
 }: StoryDetailsFormProps) {
   const { dict } = useI18n();
@@ -104,6 +106,18 @@ export function StoryDetailsForm({
             step={1}
             value={storyPoints}
             onChange={(e) => onStoryPointsChange(e.target.value)}
+            placeholder="—"
+          />
+        </DetailRow>
+        <DetailRow id={`${fieldId}-story-hours`} label={t.estimatedHoursLabel}>
+          <Input
+            id={`${fieldId}-story-hours`}
+            type="number"
+            min={0}
+            max={999}
+            step={1}
+            value={estimatedHours}
+            onChange={(e) => onEstimatedHoursChange(e.target.value)}
             placeholder="—"
           />
         </DetailRow>

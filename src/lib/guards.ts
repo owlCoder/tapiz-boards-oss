@@ -87,7 +87,7 @@ export async function requireProjectOwner(
   return { user, project };
 }
 
-/** Manages the project board (columns, members, public link, moderation): owner only. */
+/** Manages the project board (columns, public link, moderation): owner only. */
 export async function requireProjectManager(
   projectId: string,
 ): Promise<{ user: SessionUser; project: ProjectDto }> {
@@ -95,6 +95,22 @@ export async function requireProjectManager(
   const project = await requireProject(projectId);
   if (!canManageProject(project, user)) {
     throw new UnauthorizedError("Samo vlasnik projekta može ovu akciju");
+  }
+  return { user, project };
+}
+
+/** Owner or instance admin can add and remove project members. */
+export function canManageProjectMembers(project: ProjectDto, user: SessionUser): boolean {
+  return project.ownerId === user.id || user.role === "admin";
+}
+
+export async function requireProjectMemberManager(
+  projectId: string,
+): Promise<{ user: SessionUser; project: ProjectDto }> {
+  const user = await requireUser();
+  const project = await requireProject(projectId);
+  if (!canManageProjectMembers(project, user)) {
+    throw new UnauthorizedError("Samo vlasnik projekta ili administrator može ovu akciju");
   }
   return { user, project };
 }

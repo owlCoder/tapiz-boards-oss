@@ -16,6 +16,8 @@ export interface ProjectMemberDto {
   firstName: string;
   lastName: string;
   email: string;
+  /** Hours per week available during a sprint. NULL = not set. */
+  weeklyCapacityHours: number | null;
 }
 
 export function projectDisplayName(project: Pick<ProjectDto, "name">): string {

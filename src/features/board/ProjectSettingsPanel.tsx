@@ -53,7 +53,7 @@ export function ProjectSettingsPanel({
               }}
               className="flex-1 justify-center"
             >
-              {dict.teams.members}
+              {dict.teams.addMembersButton}
             </Button>
             <Button
               variant="secondary"

@@ -57,6 +57,7 @@ export async function updateStoryFullAction(
         description: storySchema.shape.description,
         assigneeId: storyDetailsSchema.shape.assigneeId,
         storyPoints: storyDetailsSchema.shape.storyPoints,
+        estimatedHours: storyDetailsSchema.shape.estimatedHours,
         sprintId: storyDetailsSchema.shape.sprintId,
         columnId: storyDetailsSchema.shape.columnId,
         priority: storyDetailsSchema.shape.priority,
@@ -75,6 +76,33 @@ export async function updateStoryFullAction(
       const label = await columnLabel(pid, details.columnId);
       await eventsService.log(pid, user.id, "story_moved", `${title} → ${label}`, story.id);
     }
+    revalidateBoard(pid);
+    return ok(undefined);
+  });
+}
+
+/** Reassign a story without saving unrelated client-side fields. */
+export async function assignStorySuggestionAction(
+  projectId: unknown,
+  storyId: unknown,
+  newAssigneeId: unknown,
+  expected: unknown,
+): Promise<ActionResult> {
+  return runAction(async () => {
+    const pid = idSchema.parse(projectId);
+    const { user } = await requireProjectMember(pid);
+    const sid = idSchema.parse(storyId);
+    const assigneeId = idSchema.parse(newAssigneeId);
+    const parsed = z.object({
+      assigneeId: storyDetailsSchema.shape.assigneeId,
+      estimatedHours: storyDetailsSchema.shape.estimatedHours,
+      sprintId: idSchema,
+      columnId: idSchema,
+    }).safeParse(expected);
+    if (!parsed.success) return fail(parsed.error.issues[0].message);
+    const result = await boardService.assignStoryFromSuggestion(pid, sid, assigneeId, parsed.data);
+    if (!result.ok) return result;
+    await eventsService.log(pid, user.id, "story_updated", result.data, sid);
     revalidateBoard(pid);
     return ok(undefined);
   });

@@ -177,6 +177,7 @@ export const boardService = {
       description: titleDesc.description,
       assigneeId: details.assigneeId,
       storyPoints: details.storyPoints,
+      estimatedHours: details.estimatedHours,
       priority: details.priority,
       dueDate: details.dueDate,
       sprintId,
@@ -184,6 +185,39 @@ export const boardService = {
       position,
     });
     return ok(undefined);
+  },
+
+  /**
+   * Apply a capacity suggestion without rewriting the rest of the story.
+   */
+  async assignStoryFromSuggestion(
+    projectId: string,
+    storyId: string,
+    newAssigneeId: string,
+    expected: { assigneeId: string | null; estimatedHours: number | null; sprintId: string; columnId: string },
+  ): Promise<ActionResult<string>> {
+    const storyResult = await this.getProjectStory(projectId, storyId);
+    if (!storyResult.ok) return fail(storyResult.error);
+    const story = storyResult.data;
+    const [activeSprint, isMember, columns] = await Promise.all([
+      sprintsRepo.findActiveByProject(projectId),
+      projectsRepo.isMember(projectId, newAssigneeId),
+      boardRepo.columns(projectId),
+    ]);
+    if (!isMember) return fail("Dodeljena osoba nije član projekta");
+    if (
+      activeSprint?.id !== expected.sprintId ||
+      story.sprintId !== expected.sprintId ||
+      story.columnId !== expected.columnId ||
+      story.assigneeId !== expected.assigneeId ||
+      story.estimatedHours !== expected.estimatedHours ||
+      !columns.some((column) => column.id === story.columnId && !column.isDone)
+    ) {
+      return fail("Predlog više nije aktuelan. Osvežite tablu i pokušajte ponovo.");
+    }
+    const updated = await boardRepo.assignStoryFromSuggestion(projectId, storyId, newAssigneeId, expected);
+    if (!updated) return fail("Story je u međuvremenu izmenjen. Osvežite tablu.");
+    return ok(story.title);
   },
 
   removeStory: (storyId: string) => boardRepo.removeStory(storyId),

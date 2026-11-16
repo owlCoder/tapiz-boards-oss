@@ -174,7 +174,7 @@ async function main() {
       pid,
       before,
       { title: "B renamed", description: "" },
-      { assigneeId: null, storyPoints: null, sprintId: "does-not-exist", columnId: null, priority: "high", dueDate: null },
+      { assigneeId: null, storyPoints: null, estimatedHours: null, sprintId: "does-not-exist", columnId: null, priority: "high", dueDate: null },
     );
     const after = unwrap(await boardService.getStory(titleIds.get("B")!));
     check("rejected update writes nothing", !badUpdate.ok && after.title === "B" && after.priority === before.priority);
@@ -182,19 +182,19 @@ async function main() {
       pid,
       before,
       { title: "B renamed", description: "desc" },
-      { assigneeId: owner.id, storyPoints: 3, sprintId: s1.id, columnId: done.id, priority: "high", dueDate: "2026-02-01" },
+      { assigneeId: owner.id, storyPoints: 3, estimatedHours: 5, sprintId: s1.id, columnId: done.id, priority: "high", dueDate: "2026-02-01" },
     );
     const updated = unwrap(await boardService.getStory(titleIds.get("B")!));
     check(
       "valid update writes everything at once",
-      goodUpdate.ok && updated.title === "B renamed" && updated.columnId === done.id && updated.storyPoints === 3,
+      goodUpdate.ok && updated.title === "B renamed" && updated.columnId === done.id && updated.storyPoints === 3 && updated.estimatedHours === 5,
     );
     titleIds.set("B renamed", titleIds.get("B")!);
     const nonMember = await boardService.updateStoryFull(
       pid,
       updated,
       { title: "B renamed", description: "desc" },
-      { assigneeId: other.id, storyPoints: 3, sprintId: s1.id, columnId: done.id, priority: "high", dueDate: null },
+      { assigneeId: other.id, storyPoints: 3, estimatedHours: 5, sprintId: s1.id, columnId: done.id, priority: "high", dueDate: null },
     );
     check("non-member assignee is rejected", !nonMember.ok);
 

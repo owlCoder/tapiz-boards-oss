@@ -40,6 +40,7 @@ export function createProjectCsvFiles(data: ProjectExportData): Record<string, s
     "members.csv": createCsv(data.members, [
       { key: "userId", header: "user_id" }, { key: "firstName", header: "first_name" },
       { key: "lastName", header: "last_name" }, { key: "email", header: "email" },
+      { key: "weeklyCapacityHours", header: "weekly_capacity_hours" },
       { key: "joinedAt", header: "joined_at" }, { key: "isOwner", header: "is_owner" },
     ]),
     "columns.csv": createCsv(data.columns, [
@@ -63,6 +64,7 @@ export function createProjectCsvFiles(data: ProjectExportData): Record<string, s
       { key: "authorName", header: "author_name" }, { key: "authorEmail", header: "author_email" },
       { key: "assigneeId", header: "assignee_id" }, { key: "assigneeName", header: "assignee_name" },
       { key: "assigneeEmail", header: "assignee_email" }, { key: "storyPoints", header: "story_points" },
+      { key: "estimatedHours", header: "estimated_hours" },
       { key: "priority", header: "priority" }, { key: "dueDate", header: "due_date" },
       { key: "createdAt", header: "created_at" }, { key: "updatedAt", header: "updated_at" },
     ]),

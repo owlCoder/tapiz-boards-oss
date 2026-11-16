@@ -203,6 +203,9 @@ export function SprintCard({
               </div>
               <Badge variant="muted">{columnName(story.columnId)}</Badge>
               {story.storyPoints !== null && <Badge variant="info">{story.storyPoints} SP</Badge>}
+              {story.estimatedHours !== null && (
+                <Badge variant="muted">{fmt(dict.board.hoursBadge, { hours: story.estimatedHours })}</Badge>
+              )}
               <Button
                 size="sm"
                 variant="ghost"

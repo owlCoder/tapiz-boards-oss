@@ -33,6 +33,18 @@ export const projectsService = {
   /** Sadržaj člana (story-ji, komentari) se NE briše — samo članstvo. */
   removeMember: (projectId: string, userId: string) => projectsRepo.removeMember(projectId, userId),
 
+  /** Weekly hours this member can spend during a sprint. NULL clears the value. */
+  async setMemberCapacity(
+    projectId: string,
+    userId: string,
+    weeklyCapacityHours: number | null,
+  ): Promise<ActionResult<void>> {
+    const isMember = await projectsRepo.isMember(projectId, userId);
+    if (!isMember) return fail("Korisnik nije član projekta");
+    await projectsRepo.setMemberCapacity(projectId, userId, weeklyCapacityHours);
+    return ok(undefined);
+  },
+
   async findByPublicToken(token: string): Promise<ProjectDto | null> {
     return projectsRepo.findByPublicToken(token);
   },

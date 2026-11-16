@@ -32,6 +32,7 @@ import { ProjectMembersModal } from "@/features/projects/ProjectMembersModal";
 import { ProjectCalendarPanel } from "./ProjectCalendarPanel";
 import { BoardInsightsPanel } from "./BoardInsightsPanel";
 import { BoardSprintBar } from "./BoardSprintBar";
+import { SprintCapacityPanel } from "./SprintCapacityPanel";
 import { BoardFilters } from "./board/BoardFilters";
 import { useBoardFilters } from "./useBoardFilters";
 import { useBoardDragDrop } from "./useBoardDragDrop";
@@ -55,6 +56,7 @@ export function BoardView({
   canManage,
 }: BoardViewProps) {
   const { dict } = useI18n();
+  const canAddMembers = canManage || currentUser.role === "admin";
   const activeSprint = sprints.find((sprint) => sprint.status === "active") ?? null;
   const [columns, setColumns] = useState(initial);
   const [openStory, setOpenStory] = useState<StoryDto | null>(null);
@@ -90,6 +92,15 @@ export function BoardView({
         banner={<InfoBanner text={dict.board.infoBanner} />}
       />
       <BoardSprintBar sprint={activeSprint} columns={columns} />
+      {activeSprint && (
+        <SprintCapacityPanel
+          projectId={project.id}
+          sprint={activeSprint}
+          columns={columns}
+          members={members}
+          canManage={canManage}
+        />
+      )}
       <BoardFilters
         search={filters.search}
         filterAssignee={filters.filterAssignee}
@@ -107,6 +118,7 @@ export function BoardView({
         onInsightsToggle={() => setInsightsOpen(true)}
         onCreateStory={() => setCreateOpen(true)}
         onSettingsOpen={() => setSettingsOpen(true)}
+        onAddMembers={canAddMembers ? () => setMembersOpen(true) : undefined}
       />
       {filtersActive && <InfoBanner text={dict.board.filtersDragDisabled} />}
       <StoryCreateForm
@@ -177,8 +189,12 @@ export function BoardView({
         onManageMembers={() => setMembersOpen(true)}
         onClose={() => setSettingsOpen(false)}
       />
-      {canManage && (
-        <ProjectMembersModal project={membersOpen ? project : null} onClose={() => setMembersOpen(false)} />
+      {canAddMembers && (
+        <ProjectMembersModal
+          project={membersOpen ? project : null}
+          canEditCapacity={canManage}
+          onClose={() => setMembersOpen(false)}
+        />
       )}
       <ProjectCalendarPanel open={calendarOpen} projectId={project.id} onClose={() => setCalendarOpen(false)} />
       {canManage && (

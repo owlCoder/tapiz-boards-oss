@@ -42,6 +42,7 @@ export const projectImportSchema = z.object({
     email,
     joinedAt: isoTimestamp,
     isOwner: z.boolean(),
+    weeklyCapacityHours: z.number().int().min(0).max(168).nullable().optional(),
   }).strict()),
   columns: z.array(z.object({
     id: uuid,
@@ -80,6 +81,7 @@ export const projectImportSchema = z.object({
     assigneeName: z.string().max(201).nullable(),
     assigneeEmail: email.nullable(),
     storyPoints: nonNegativeInt.nullable(),
+    estimatedHours: z.number().int().min(0).max(999).nullable().optional(),
     priority: z.enum(["low", "medium", "high"]),
     dueDate: isoDay.nullable(),
     createdAt: isoTimestamp,

@@ -54,6 +54,9 @@ function StoryPreview({
           </Badge>
         )}
         {story.storyPoints !== null && <Badge variant="info">{story.storyPoints} SP</Badge>}
+        {story.estimatedHours !== null && (
+          <Badge variant="muted">{fmt(t.hoursBadge, { hours: story.estimatedHours })}</Badge>
+        )}
         {story.commentCount > 0 && <Badge variant="muted">{story.commentCount} {t.colComments.toLowerCase()}</Badge>}
       </span>
       <span className="mt-2 block text-xs text-(--tapiz-text-secondary)">
@@ -175,6 +178,7 @@ export function PublicBoardView({ title, subtitle, columns, backlog, dict }: Pub
                 <div><dt className="text-xs text-(--tapiz-text-muted)">{t.priorityLabel}</dt><dd className="mt-1 font-medium">{selected.priority === "high" ? t.priorityHigh : selected.priority === "low" ? t.priorityLow : t.priorityMedium}</dd></div>
                 <div><dt className="text-xs text-(--tapiz-text-muted)">{t.sprintLabel}</dt><dd className="mt-1 font-medium">{selected.sprintName ?? t.noSprint}</dd></div>
                 <div><dt className="text-xs text-(--tapiz-text-muted)">{t.storyPointsLabel}</dt><dd className="mt-1 font-medium">{selected.storyPoints ?? "—"}</dd></div>
+                <div><dt className="text-xs text-(--tapiz-text-muted)">{t.estimatedHoursLabel}</dt><dd className="mt-1 font-medium">{selected.estimatedHours ?? "—"}</dd></div>
                 <div><dt className="text-xs text-(--tapiz-text-muted)">{t.dueDateLabel}</dt><dd className="mt-1 font-medium">{selected.dueDate ? formatIsoDate(selected.dueDate) : "—"}</dd></div>
               </dl>
               <div className="border-t border-(--tapiz-border-subtle) pt-4">

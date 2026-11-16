@@ -30,5 +30,6 @@ export interface ProjectsRepo {
   isMember(projectId: string, userId: string): Promise<boolean>;
   /** False when the user is already a member (primary key conflict). */
   addMember(projectId: string, userId: string): Promise<boolean>;
+  setMemberCapacity(projectId: string, userId: string, weeklyCapacityHours: number | null): Promise<void>;
   removeMember(projectId: string, userId: string): Promise<void>;
 }

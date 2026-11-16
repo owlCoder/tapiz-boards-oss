@@ -17,7 +17,7 @@ import {
   UserPlus,
   useToast,
 } from "@tapizlabs/ui";
-import type { UserDto } from "@/domain/types";
+import type { ProjectDto, UserDto } from "@/domain/types";
 import { fullName } from "@/domain/types";
 import {
   adminDeleteUserAction,
@@ -28,19 +28,22 @@ import {
 } from "@/lib/actions/admin.actions";
 import { useI18n } from "@/i18n/I18nProvider";
 import { SidePanel } from "@/components/layout/SidePanel";
+import { AdminAddMembersPanel } from "./AdminAddMembersPanel";
 
 interface AdminUsersViewProps {
   users: UserDto[];
+  projects: ProjectDto[];
   currentUserId: string;
 }
 
-export function AdminUsersView({ users, currentUserId }: AdminUsersViewProps) {
+export function AdminUsersView({ users, projects, currentUserId }: AdminUsersViewProps) {
   const router = useRouter();
   const { showToast } = useToast();
   const { dict } = useI18n();
   const t = dict.admin;
 
   const [createOpen, setCreateOpen] = useState(false);
+  const [addMembersOpen, setAddMembersOpen] = useState(false);
   const [createForm, setCreateForm] = useState({ firstName: "", lastName: "", email: "", password: "", role: "member" as "admin" | "member" });
   const [createError, setCreateError] = useState<string | null>(null);
   const [createLoading, setCreateLoading] = useState(false);
@@ -136,9 +139,14 @@ export function AdminUsersView({ users, currentUserId }: AdminUsersViewProps) {
         subtitle={t.description}
         variant="enterprise"
         action={
-          <Button size="sm" icon={<Plus size={15} />} onClick={() => setCreateOpen(true)}>
-            {t.newUser}
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button size="sm" variant="secondary" icon={<UserPlus size={15} />} onClick={() => setAddMembersOpen(true)}>
+              {t.addToTeamButton}
+            </Button>
+            <Button size="sm" icon={<Plus size={15} />} onClick={() => setCreateOpen(true)}>
+              {t.newUser}
+            </Button>
+          </div>
         }
       />
 
@@ -182,6 +190,13 @@ export function AdminUsersView({ users, currentUserId }: AdminUsersViewProps) {
           </li>
         ))}
       </ul>
+
+      <AdminAddMembersPanel
+        open={addMembersOpen}
+        projects={projects}
+        users={users}
+        onClose={() => setAddMembersOpen(false)}
+      />
 
       <SidePanel
         open={createOpen}

@@ -39,6 +39,7 @@ export function StoryFormContent({
         assigneeId={form.assigneeId}
         sprintId={form.sprintId}
         storyPoints={form.storyPoints}
+        estimatedHours={form.estimatedHours}
         priority={form.priority}
         dueDate={form.dueDate}
         columns={columns}
@@ -50,6 +51,7 @@ export function StoryFormContent({
         onAssigneeChange={form.setAssigneeId}
         onSprintChange={form.setSprintId}
         onStoryPointsChange={form.setStoryPoints}
+        onEstimatedHoursChange={form.setEstimatedHours}
         onPriorityChange={form.setPriority}
         onDueDateChange={form.setDueDate}
       />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import { BarChart, Button, Calendar, Download, Gear, Plus, SearchInput, Select, X } from "@tapizlabs/ui";
+import { BarChart, Button, Calendar, Download, Gear, Plus, SearchInput, Select, UserPlus, X } from "@tapizlabs/ui";
 import type { ProjectMemberDto } from "@/domain/types";
 import { useI18n } from "@/i18n/I18nProvider";
 
@@ -26,6 +26,7 @@ interface BoardFiltersProps {
   onManageColumns?: () => void;
   onCreateStory: () => void;
   onSettingsOpen: () => void;
+  onAddMembers?: () => void;
 }
 
 export function BoardFilters({
@@ -46,6 +47,7 @@ export function BoardFilters({
   onManageColumns,
   onCreateStory,
   onSettingsOpen,
+  onAddMembers,
 }: BoardFiltersProps) {
   const { dict } = useI18n();
   const fieldId = useId();
@@ -113,6 +115,17 @@ export function BoardFilters({
 
       {/* Akcije — na mobilnom 2-kol grid pune širine, na lg inline desno */}
       <div className="grid grid-cols-2 gap-2 lg:ml-auto lg:flex lg:flex-wrap lg:items-center">
+        {onAddMembers && (
+          <Button
+            variant="secondary"
+            size="md"
+            icon={<UserPlus size={16} />}
+            onClick={onAddMembers}
+            className="h-11 w-full justify-center lg:w-auto"
+          >
+            {dict.teams.addMembersButton}
+          </Button>
+        )}
         {canManage && (
           <Button
             variant="secondary"

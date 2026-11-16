@@ -15,6 +15,8 @@ export interface StoryDto {
   assigneeId: string | null;
   assigneeName: string | null;
   storyPoints: number | null;
+  /** Expected duration in whole hours. NULL = not estimated. */
+  estimatedHours: number | null;
   priority: StoryPriority;
   /** Due date in ISO format (yyyy-mm-dd). */
   dueDate: string | null;

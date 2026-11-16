@@ -20,7 +20,9 @@ import {
   getMemberCandidatesAction,
   getProjectMembersAction,
   removeProjectMemberAction,
+  setMemberCapacityAction,
 } from "@/lib/actions/projects.actions";
+import { MAX_WEEKLY_CAPACITY_HOURS } from "@/domain/services/sprint-capacity";
 import { fmt } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
 import { SidePanel } from "@/components/layout/SidePanel";
@@ -41,12 +43,86 @@ function CheckMark({ checked }: { checked: boolean }) {
   );
 }
 
+function MemberCapacityField({
+  projectId,
+  member,
+  onSaved,
+}: {
+  projectId: string;
+  member: ProjectMemberDto;
+  onSaved: (weeklyCapacityHours: number | null) => void;
+}) {
+  const router = useRouter();
+  const { showToast } = useToast();
+  const { dict } = useI18n();
+  const t = dict.teams;
+  const saved = member.weeklyCapacityHours === null ? "" : String(member.weeklyCapacityHours);
+  const [value, setValue] = useState(saved);
+  const [prevSaved, setPrevSaved] = useState(saved);
+  const [saving, setSaving] = useState(false);
+  if (saved !== prevSaved) {
+    setPrevSaved(saved);
+    setValue(saved);
+  }
+
+  const commit = async () => {
+    const trimmed = value.trim();
+    if (trimmed === saved || saving) return;
+    const hours = trimmed === "" ? null : Number(trimmed);
+    if (hours !== null && (!Number.isInteger(hours) || hours < 0 || hours > MAX_WEEKLY_CAPACITY_HOURS)) {
+      showToast(t.capacityInvalid, false);
+      setValue(saved);
+      return;
+    }
+    setSaving(true);
+    const result = await setMemberCapacityAction(projectId, member.userId, hours);
+    setSaving(false);
+    if (!result.ok) {
+      showToast(result.error, false);
+      setValue(saved);
+      return;
+    }
+    showToast(t.capacitySaved, true);
+    onSaved(hours);
+    router.refresh();
+  };
+
+  return (
+    <label className="flex items-center gap-2 text-xs text-(--tapiz-text-muted)">
+      <span className="whitespace-nowrap">{t.capacityLabel}</span>
+      <input
+        type="number"
+        min={0}
+        max={MAX_WEEKLY_CAPACITY_HOURS}
+        step={1}
+        inputMode="numeric"
+        value={value}
+        disabled={saving}
+        placeholder={t.capacityPlaceholder}
+        aria-label={`${t.capacityLabel}: ${member.firstName} ${member.lastName}`}
+        title={t.capacityHint}
+        onChange={(event) => setValue(event.target.value)}
+        onBlur={() => void commit()}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            event.currentTarget.blur();
+          }
+        }}
+        className="w-16 rounded-lg border border-(--tapiz-border-subtle) bg-(--tapiz-bg-surface) px-2 py-1 text-sm text-(--tapiz-text-primary) outline-none focus:border-violet-500"
+      />
+    </label>
+  );
+}
+
 interface ProjectMembersModalProps {
   project: ProjectDto | null;
   onClose: () => void;
+  /** Weekly capacity stays with the project owner. */
+  canEditCapacity?: boolean;
 }
 
-export function ProjectMembersModal({ project, onClose }: ProjectMembersModalProps) {
+export function ProjectMembersModal({ project, onClose, canEditCapacity = false }: ProjectMembersModalProps) {
   const router = useRouter();
   const { showToast } = useToast();
   const { dict } = useI18n();
@@ -214,7 +290,7 @@ const filteredCandidates = useMemo(() => {
                   {members.map((m) => (
                     <li
                       key={m.userId}
-                      className="flex items-center gap-3 rounded-xl border border-(--tapiz-border-subtle) bg-(--tapiz-bg-surface) px-3 py-3"
+                      className="flex flex-wrap items-center gap-3 rounded-xl border border-(--tapiz-border-subtle) bg-(--tapiz-bg-surface) px-3 py-3"
                     >
                       <div className="flex min-w-0 flex-1 items-center gap-3">
                         <Avatar name={`${m.firstName} ${m.lastName}`} size="sm" />
@@ -225,6 +301,19 @@ const filteredCandidates = useMemo(() => {
                           <p className="truncate text-xs text-(--tapiz-text-muted)">{m.email}</p>
                         </div>
                       </div>
+                      {project && canEditCapacity && (
+                        <MemberCapacityField
+                          projectId={project.id}
+                          member={m}
+                          onSaved={(weeklyCapacityHours) =>
+                            setMembers((current) =>
+                              current?.map((item) =>
+                                item.userId === m.userId ? { ...item, weeklyCapacityHours } : item,
+                              ) ?? current,
+                            )
+                          }
+                        />
+                      )}
                       {m.userId !== project?.ownerId && (
                         <Button
                           variant="outline-danger"

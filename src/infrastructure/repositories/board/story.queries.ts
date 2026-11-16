@@ -43,6 +43,7 @@ export const storyColumns = {
     string | null
   >`if(${assignees.id} is null, null, concat(${assignees.firstName}, ' ', ${assignees.lastName}))`,
   storyPoints: stories.storyPoints,
+  estimatedHours: stories.estimatedHours,
   priority: stories.priority,
   dueDate: stories.dueDate,
   commentCount: sql<number>`(select count(*) from ${comments} where ${comments.storyId} = ${stories.id})`.mapWith(Number),
@@ -135,6 +136,7 @@ export async function getStoriesForExport(projectId: string): Promise<ProjectExp
       assigneeName: sql<string | null>`if(${exportAssignees.id} is null, null, concat(${exportAssignees.firstName}, ' ', ${exportAssignees.lastName}))`,
       assigneeEmail: exportAssignees.email,
       storyPoints: stories.storyPoints,
+      estimatedHours: stories.estimatedHours,
       priority: stories.priority,
       dueDate: stories.dueDate,
       createdAt: stories.createdAt,
@@ -236,6 +238,7 @@ export async function updateStory(
     description: string;
     assigneeId: string | null;
     storyPoints: number | null;
+    estimatedHours: number | null;
     sprintId: string | null;
     columnId: string | null;
     priority: StoryDto["priority"];
@@ -245,6 +248,34 @@ export async function updateStory(
   },
 ): Promise<void> {
   await db.update(stories).set(input).where(eq(stories.id, id));
+}
+
+/**
+ * Only change the assignee. Reject an outdated capacity suggestion atomically.
+ */
+export async function assignStoryFromSuggestion(
+  projectId: string,
+  storyId: string,
+  newAssigneeId: string,
+  expected: {
+    assigneeId: string | null;
+    estimatedHours: number | null;
+    sprintId: string;
+    columnId: string;
+  },
+): Promise<boolean> {
+  const [result] = await db
+    .update(stories)
+    .set({ assigneeId: newAssigneeId })
+    .where(and(
+      eq(stories.id, storyId),
+      eq(stories.projectId, projectId),
+      eq(stories.sprintId, expected.sprintId),
+      eq(stories.columnId, expected.columnId),
+      expected.assigneeId === null ? isNull(stories.assigneeId) : eq(stories.assigneeId, expected.assigneeId),
+      expected.estimatedHours === null ? isNull(stories.estimatedHours) : eq(stories.estimatedHours, expected.estimatedHours),
+    ));
+  return result.affectedRows > 0;
 }
 
 export async function removeStory(id: string): Promise<void> {

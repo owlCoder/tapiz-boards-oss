@@ -121,10 +121,12 @@ Administrators can manually map imported people to active local accounts; email 
 
 Back up the database and stop application writes before upgrading. Run `npm run db:upgrade` to update the schema and backfill legacy author details; the backfill runs only if the schema update succeeds. Fresh databases have no legacy data to backfill.
 
+**Sprint capacity upgrade:** the application now requires `project_members.weekly_capacity_hours` and `stories.estimated_hours`. On an existing deployment, back up the target database and run `npm run db:upgrade` against it **before deploying the updated app**. Vercel builds do not run migrations.
+
 ## Checks
 
 ```bash
-npm run test:design && npm run lint && npm run typecheck && npm run build
+npm run test:design && npm run test:project-import && npm run test:sprint-capacity && npm run lint && npm run typecheck && npm run build
 ```
 
 Smoke test against a real database (creates and cleans up its own throwaway data):

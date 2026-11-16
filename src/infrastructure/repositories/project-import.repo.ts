@@ -89,19 +89,31 @@ export async function insertImportedProject(
       createdAt: new Date(data.project.createdAt),
     });
 
-    await tx.insert(projectMembers).values({ projectId, userId: ownerId });
-    const memberJoinDates = new Map<string, Date>();
+    const ownerMember = data.members.find((member) => member.isOwner)
+      ?? data.members.find((member) => localUserId(member.userId) === ownerId);
+    await tx.insert(projectMembers).values({
+      projectId,
+      userId: ownerId,
+      weeklyCapacityHours: ownerMember?.weeklyCapacityHours ?? null,
+    });
+    const memberRows = new Map<string, { joinedAt: Date; weeklyCapacityHours: number | null }>();
     for (const member of data.members) {
       const mappedId = localUserId(member.userId);
       if (!mappedId || mappedId === ownerId) continue;
       const joinedAt = new Date(member.joinedAt);
-      const previous = memberJoinDates.get(mappedId);
-      if (!previous || joinedAt < previous) memberJoinDates.set(mappedId, joinedAt);
+      const previous = memberRows.get(mappedId);
+      if (!previous || joinedAt < previous.joinedAt) {
+        memberRows.set(mappedId, {
+          joinedAt,
+          weeklyCapacityHours: member.weeklyCapacityHours ?? null,
+        });
+      }
     }
-    const importedMembers = [...memberJoinDates].map(([userId, joinedAt]) => ({
+    const importedMembers = [...memberRows].map(([userId, row]) => ({
       projectId,
       userId,
-      joinedAt,
+      joinedAt: row.joinedAt,
+      weeklyCapacityHours: row.weeklyCapacityHours,
     }));
     await insertInBatches(importedMembers, async (batch) => {
       await tx.insert(projectMembers).values(batch);
@@ -149,6 +161,7 @@ export async function insertImportedProject(
           ? localUserId(story.assigneeId)
           : null,
       storyPoints: story.storyPoints,
+      estimatedHours: story.estimatedHours ?? null,
       priority: story.priority,
       dueDate: story.dueDate,
       createdAt: new Date(story.createdAt),

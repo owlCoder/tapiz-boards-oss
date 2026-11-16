@@ -2,7 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { createProjectSchema, repoUrlSchema } from "@/domain/validation/project.schema";
+import { createProjectSchema, repoUrlSchema, weeklyCapacitySchema } from "@/domain/validation/project.schema";
+import { revalidateBoard } from "@/lib/revalidate";
 import { projectsService } from "@/application/projects.service";
 import { eventsService } from "@/application/events.service";
 import { usersService } from "@/application/users.service";
@@ -10,6 +11,7 @@ import { fullName, type UserDto } from "@/domain/types";
 import {
   requireProjectManager,
   requireProjectMember,
+  requireProjectMemberManager,
   requireProjectOwner,
   requireUser,
 } from "@/lib/guards";
@@ -21,12 +23,13 @@ const idSchema = z.string().min(1);
 export async function addProjectMemberAction(projectId: unknown, userId: unknown): Promise<ActionResult> {
   return runAction(async () => {
     const id = idSchema.parse(projectId);
-    const { user } = await requireProjectManager(id);
+    const { user } = await requireProjectMemberManager(id);
     const memberId = idSchema.parse(userId);
     const result = await projectsService.addMember(id, memberId);
     if (!result.ok) return result;
     await eventsService.log(id, user.id, "member_added", fullName(result.data));
     revalidatePath("/");
+    revalidateBoard(id);
     return ok(undefined);
   });
 }
@@ -37,7 +40,7 @@ export async function removeProjectMemberAction(
 ): Promise<ActionResult> {
   return runAction(async () => {
     const id = idSchema.parse(projectId);
-    const { user, project } = await requireProjectManager(id);
+    const { user, project } = await requireProjectMemberManager(id);
     const memberId = idSchema.parse(userId);
     if (project.ownerId === memberId) {
       return fail("Vlasnik projekta se ne može ukloniti");
@@ -46,6 +49,26 @@ export async function removeProjectMemberAction(
     await projectsService.removeMember(id, memberId);
     await eventsService.log(id, user.id, "member_removed", member ? fullName(member) : "");
     revalidatePath("/");
+    revalidateBoard(id);
+    return ok(undefined);
+  });
+}
+
+/** Weekly sprint capacity for one member. NULL clears it. Owner only. */
+export async function setMemberCapacityAction(
+  projectId: unknown,
+  userId: unknown,
+  weeklyCapacityHours: unknown,
+): Promise<ActionResult> {
+  return runAction(async () => {
+    const id = idSchema.parse(projectId);
+    await requireProjectManager(id);
+    const memberId = idSchema.parse(userId);
+    const parsed = weeklyCapacitySchema.safeParse(weeklyCapacityHours);
+    if (!parsed.success) return fail(parsed.error.issues[0].message);
+    const result = await projectsService.setMemberCapacity(id, memberId, parsed.data);
+    if (!result.ok) return result;
+    revalidateBoard(id);
     return ok(undefined);
   });
 }
@@ -54,7 +77,7 @@ export async function removeProjectMemberAction(
 export async function getMemberCandidatesAction(projectId: unknown): Promise<ActionResult<UserDto[]>> {
   return runAction(async () => {
     const id = idSchema.parse(projectId);
-    await requireProjectManager(id);
+    await requireProjectMemberManager(id);
     return ok(await usersService.listActive());
   });
 }

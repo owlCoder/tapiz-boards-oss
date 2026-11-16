@@ -8,6 +8,7 @@ export {
 export {
   createStoryAction,
   updateStoryFullAction,
+  assignStorySuggestionAction,
   deleteStoryAction,
   moveStoryAction,
 } from "./board/story.actions";

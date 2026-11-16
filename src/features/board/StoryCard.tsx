@@ -60,6 +60,9 @@ export function StoryCardContent({ story }: { story: StoryDto }) {
             </Badge>
           )}
           {story.storyPoints !== null && <Badge variant="info">{story.storyPoints} SP</Badge>}
+          {story.estimatedHours !== null && (
+            <Badge variant="muted">{fmt(dict.board.hoursBadge, { hours: story.estimatedHours })}</Badge>
+          )}
         </span>
         <span
           className="shrink-0"

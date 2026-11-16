@@ -55,6 +55,8 @@ export const projectMembers = mysqlTable(
     userId: varchar("user_id", { length: 36 })
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
+    /** Hours per week this member can spend in a sprint. NULL = not set. */
+    weeklyCapacityHours: int("weekly_capacity_hours"),
     joinedAt: timestamp("joined_at").notNull().defaultNow(),
   },
   (t) => [
@@ -131,6 +133,8 @@ export const stories = mysqlTable(
       onDelete: "set null",
     }),
     storyPoints: int("story_points"),
+    /** Expected duration in whole hours. NULL = not estimated. */
+    estimatedHours: int("estimated_hours"),
     priority: mysqlEnum("priority", ["low", "medium", "high"]).notNull().default("medium"),
     /** Due date in ISO format (yyyy-mm-dd), same as sprint dates. */
     dueDate: varchar("due_date", { length: 10 }),

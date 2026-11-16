@@ -73,6 +73,38 @@ test("import rejects projects with multiple Done columns", () => {
   );
 });
 
+test("import keeps capacity and estimates optional for older files", () => {
+  const data = validExport();
+  data.members[0].weeklyCapacityHours = 20;
+  data.stories.push({
+    id: "00000000-0000-4000-8000-000000000006",
+    projectId,
+    columnId: data.columns[0].id,
+    columnName: "To do",
+    sprintId: null,
+    sprintName: null,
+    title: "Estimated story",
+    description: null,
+    position: 0,
+    authorId: ownerId,
+    authorName: "Test Owner",
+    authorEmail: "owner@example.com",
+    assigneeId: null,
+    assigneeName: null,
+    assigneeEmail: null,
+    storyPoints: null,
+    estimatedHours: 8,
+    priority: "medium",
+    dueDate: null,
+    createdAt: "2026-01-01T00:00:00.000Z",
+    updatedAt: "2026-01-01T00:00:00.000Z",
+  });
+  assert.equal(projectImportValidationMessage(data), null);
+
+  data.stories[0].estimatedHours = 1000;
+  assert.match(projectImportValidationMessage(data) ?? "", /estimatedHours/);
+});
+
 test("import rejects sprint goals that exceed the MySQL TEXT byte limit", () => {
   const data = validExport();
   data.sprints.push({

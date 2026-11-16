@@ -9,7 +9,7 @@ export interface PublicDetails {
 export type PublicStory = Pick<
   StoryDto,
   "id" | "title" | "description" | "priority" | "dueDate" | "taskCount" |
-  "tasksDone" | "storyPoints" | "assigneeName" | "authorName" | "createdAt" |
+  "tasksDone" | "storyPoints" | "estimatedHours" | "assigneeName" | "authorName" | "createdAt" |
   "sprintName" | "commentCount"
 > & PublicDetails;
 
@@ -32,6 +32,7 @@ export function toPublicStories(
     taskCount: story.taskCount,
     tasksDone: story.tasksDone,
     storyPoints: story.storyPoints,
+    estimatedHours: story.estimatedHours,
     assigneeName: story.assigneeName,
     authorName: story.authorName,
     createdAt: story.createdAt,

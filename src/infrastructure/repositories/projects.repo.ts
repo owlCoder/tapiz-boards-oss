@@ -202,6 +202,7 @@ export const projectsRepo: ProjectsRepo = {
         firstName: users.firstName,
         lastName: users.lastName,
         email: users.email,
+        weeklyCapacityHours: projectMembers.weeklyCapacityHours,
       })
       .from(projectMembers)
       .innerJoin(users, eq(users.id, projectMembers.userId))
@@ -216,6 +217,7 @@ export const projectsRepo: ProjectsRepo = {
         firstName: users.firstName,
         lastName: users.lastName,
         email: users.email,
+        weeklyCapacityHours: projectMembers.weeklyCapacityHours,
         joinedAt: projectMembers.joinedAt,
       })
       .from(projectMembers)
@@ -236,6 +238,17 @@ export const projectsRepo: ProjectsRepo = {
     // INSERT IGNORE: the (project_id, user_id) primary key makes a double submit a no-op.
     const [result] = await db.insert(projectMembers).ignore().values({ projectId, userId });
     return result.affectedRows > 0;
+  },
+
+  async setMemberCapacity(
+    projectId: string,
+    userId: string,
+    weeklyCapacityHours: number | null,
+  ): Promise<void> {
+    await db
+      .update(projectMembers)
+      .set({ weeklyCapacityHours })
+      .where(and(eq(projectMembers.projectId, projectId), eq(projectMembers.userId, userId)));
   },
 
   async removeMember(projectId: string, userId: string): Promise<void> {

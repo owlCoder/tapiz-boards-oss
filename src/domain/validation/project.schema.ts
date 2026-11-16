@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { MAX_WEEKLY_CAPACITY_HOURS } from "@/domain/services/sprint-capacity";
 
 export const createProjectSchema = z.object({
   name: z
@@ -8,6 +9,14 @@ export const createProjectSchema = z.object({
     .max(100, "Naziv projekta može imati najviše 100 znakova"),
 });
 export type CreateProjectInput = z.infer<typeof createProjectSchema>;
+
+/** NULL clears the weekly capacity. */
+export const weeklyCapacitySchema = z
+  .number()
+  .int("Kapacitet mora biti ceo broj sati")
+  .min(0, "Kapacitet ne može biti negativan")
+  .max(MAX_WEEKLY_CAPACITY_HOURS, "Kapacitet je prevelik")
+  .nullable();
 
 /** Public GitHub repo: https://github.com/owner/repo (no subpaths). */
 export const repoUrlSchema = z

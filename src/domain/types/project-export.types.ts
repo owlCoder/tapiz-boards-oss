@@ -37,6 +37,7 @@ export interface ProjectExportStory {
   assigneeName: string | null;
   assigneeEmail: string | null;
   storyPoints: number | null;
+  estimatedHours: number | null;
   priority: "low" | "medium" | "high";
   dueDate: string | null;
   createdAt: string;
