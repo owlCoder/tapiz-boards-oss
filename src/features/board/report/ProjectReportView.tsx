@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { ProjectExportData } from "@/domain/types";
 import { buildProjectReport, type ReportGroup, type ReportStory, type ReportTotals } from "@/domain/services/project-report";
 import { INTL_LOCALES, type Locale } from "@/i18n/config";
-import type { Dict } from "@/i18n/dictionaries";
+import { REPORT_TEXT, type ReportText } from "./report-text";
 import { useI18n } from "@/i18n/I18nProvider";
 import "./project-report.css";
 
@@ -28,7 +28,7 @@ function ReportMetric({ label, value }: { label: string; value: string | number 
   );
 }
 
-function GroupMetrics({ totals, t }: { totals: ReportTotals; t: Dict["report"] }) {
+function GroupMetrics({ totals, t }: { totals: ReportTotals; t: ReportText }) {
   return (
     <div className="report-group-metrics flex flex-wrap gap-x-5 gap-y-1 text-sm text-(--tapiz-text-secondary)">
       <span>{t.stories}: <strong>{totals.stories}</strong></span>
@@ -40,7 +40,7 @@ function GroupMetrics({ totals, t }: { totals: ReportTotals; t: Dict["report"] }
   );
 }
 
-function ReportStoryItem({ item, t, locale }: { item: ReportStory; t: Dict["report"]; locale: Locale }) {
+function ReportStoryItem({ item, t, locale }: { item: ReportStory; t: ReportText; locale: Locale }) {
   const story = item.story;
   return (
     <li className="report-story rounded-xl border border-(--tapiz-border-subtle) bg-(--tapiz-bg-surface) p-4">
@@ -85,7 +85,7 @@ function ReportStoryItem({ item, t, locale }: { item: ReportStory; t: Dict["repo
   );
 }
 
-function ReportSection({ group, t, locale }: { group: ReportGroup; t: Dict["report"]; locale: Locale }) {
+function ReportSection({ group, t, locale }: { group: ReportGroup; t: ReportText; locale: Locale }) {
   const sprint = group.sprint;
   return (
     <section className="report-section space-y-3 rounded-2xl border border-(--tapiz-border-subtle) bg-(--tapiz-bg-surface-muted) p-5">
@@ -129,8 +129,8 @@ function ReportSection({ group, t, locale }: { group: ReportGroup; t: Dict["repo
 
 /** A complete, print-first report using the same authorized export snapshot as JSON/CSV. */
 export function ProjectReportView({ data }: { data: ProjectExportData }) {
-  const { dict, locale } = useI18n();
-  const t = dict.report;
+  const { locale } = useI18n();
+  const t = REPORT_TEXT[locale];
   const report = buildProjectReport(data);
 
   useEffect(() => {
