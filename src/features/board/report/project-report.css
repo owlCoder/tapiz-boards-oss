@@ -1,0 +1,99 @@
+/* Printable project report: separate route without the app navigation shell. */
+@media screen {
+  .project-report {
+    min-height: 100vh;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 13mm 12mm 15mm;
+  }
+
+  html, body, .oss-app {
+    background: white !important;
+    color: #17212b !important;
+    color-scheme: light !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .report-controls,
+  .project-report button,
+  .project-report nav {
+    display: none !important;
+  }
+
+  .project-report {
+    max-width: none !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: #17212b !important;
+    font-size: 10pt !important;
+  }
+
+  .project-report *,
+  .project-report *::before,
+  .project-report *::after {
+    color: #17212b !important;
+    border-color: #cdd6de !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  .project-report h1 { font-size: 23pt !important; }
+  .project-report h2 { font-size: 15pt !important; }
+  .project-report h3 { font-size: 12pt !important; }
+  .project-report p, .project-report li { overflow-wrap: anywhere; }
+
+  .report-header,
+  .report-summary,
+  .report-members,
+  .report-metric,
+  .report-member,
+  .report-story,
+  .report-retrospective,
+  .report-activity {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .report-section {
+    break-before: auto;
+    background: white !important;
+    padding: 9pt !important;
+  }
+
+  .report-section > div:first-child,
+  .report-group-metrics {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .report-story {
+    background: white !important;
+    padding: 8pt !important;
+  }
+
+  .report-story ul, .report-section ol, .report-activities ol {
+    padding: 0;
+  }
+
+  .report-sprints, .report-backlog, .report-activities {
+    break-before: auto;
+  }
+
+  .report-sprints > h2,
+  .report-backlog > h2,
+  .report-activities > h2 {
+    break-after: avoid;
+  }
+
+  a[href]::after { content: none !important; }
+}
