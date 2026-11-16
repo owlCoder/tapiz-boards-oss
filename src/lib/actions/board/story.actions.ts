@@ -81,6 +81,33 @@ export async function updateStoryFullAction(
   });
 }
 
+/** Reassign a story without saving unrelated client-side fields. */
+export async function assignStorySuggestionAction(
+  projectId: unknown,
+  storyId: unknown,
+  newAssigneeId: unknown,
+  expected: unknown,
+): Promise<ActionResult> {
+  return runAction(async () => {
+    const pid = idSchema.parse(projectId);
+    const { user } = await requireProjectMember(pid);
+    const sid = idSchema.parse(storyId);
+    const assigneeId = idSchema.parse(newAssigneeId);
+    const parsed = z.object({
+      assigneeId: storyDetailsSchema.shape.assigneeId,
+      estimatedHours: storyDetailsSchema.shape.estimatedHours,
+      sprintId: idSchema,
+      columnId: idSchema,
+    }).safeParse(expected);
+    if (!parsed.success) return fail(parsed.error.issues[0].message);
+    const result = await boardService.assignStoryFromSuggestion(pid, sid, assigneeId, parsed.data);
+    if (!result.ok) return result;
+    await eventsService.log(pid, user.id, "story_updated", result.data, sid);
+    revalidateBoard(pid);
+    return ok(undefined);
+  });
+}
+
 export async function deleteStoryAction(projectId: unknown, storyId: unknown): Promise<ActionResult> {
   return runAction(async () => {
     const pid = idSchema.parse(projectId);
